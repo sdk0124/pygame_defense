@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.env
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Tests / Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Pygame runtime/screenshots (원하면 제외)
+screenshots/
+runtime_cache/
+
+# Build artifacts (배포용 패키징 시)
+dist/
+build/
