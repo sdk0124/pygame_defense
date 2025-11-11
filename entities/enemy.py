@@ -44,7 +44,9 @@ class Enemy(pygame.sprite.Sprite):
             self.target = Vector2(self.waypoints[self.target_waypoint_idx])
             self.movement = self.target - self.position
         else:
-            self.kill()
+            pass
+            # 다 도달했으면 해당 적은 삭제되고 최종 방어 타워의 체력 1만큼 감소.
+            # self.kill()
 
         dist = self.movement.length()
 
@@ -84,8 +86,12 @@ if __name__ == "__main__":
     print(points)
 
     enemy_images["byter"] = pygame.transform.scale(enemy_images["byter"], (64, 64))
+    enemy_images["worm"] = pygame.transform.scale(enemy_images["worm"], (64, 64))
+    enemy_images["boss"] = pygame.transform.scale(enemy_images["boss"], (128, 128))
 
-    new_enemy = Enemy("byter", points, enemy_images["byter"])
+    # new_enemy = Enemy("byter", points, enemy_images["byter"])
+    # new_enemy = Enemy("worm", points, enemy_images["worm"])
+    new_enemy = Enemy("boss", points, enemy_images["boss"])
 
     running = True
 
