@@ -1,6 +1,4 @@
 import pygame
-from scenes.scene_state_manager import SceneStateManager
-from scenes.start_scene import StartScene
 from core.settings import FPS, SCREEN_WIDTH, SCREEN_HEIGHT
 
 class Game:
@@ -11,13 +9,21 @@ class Game:
         self.running = True
         pygame.display.set_caption("CPU Defence")
 
-        self.scene_manager = SceneStateManager(self)
-        self.scene_manager.change_scene(StartScene(self))
-
     def run(self):
         while self.running:
-            state = self.scene_manager.get_scene()
-            state.handle_events()
-            state.update(FPS)
-            state.draw(self.screen)
-            pygame.display.flip()
+            self.clock.tick(FPS)
+            self.handle_events()
+            self.update()
+            self.draw()
+
+    def handle_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
+
+    def update(self):
+        pass
+
+    def draw(self):
+        self.screen.fill((255, 255, 255))
+        pygame.display.flip()
