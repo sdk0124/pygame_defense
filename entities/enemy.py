@@ -10,15 +10,13 @@ def process_data(map_data):
     for layer in map_data["layers"]:
         if layer["name"] == "waypoints":
             for obj in layer["objects"]:
-                waypoint_data = obj["polyline"]
-                process_waypoints(waypoint_data)
+                process_waypoints(obj)
 
 def process_waypoints(data):
     # iterate through waypoints to extract x, y
-    for point in data:
-        temp_x = point.get("x")
-        temp_y = point.get("y")
-        points.append((temp_x, temp_y))
+    x = data['x']
+    y = data['y']
+    points.append((x, y))
 
 #### 임시 함수 끝 #####
 
@@ -90,6 +88,8 @@ if __name__ == "__main__":
     new_enemy = Enemy("byter", points, enemy_images["byter"])
 
     running = True
+
+    new_enemy.speed = 10
 
     while running:
         clock.tick(FPS)
