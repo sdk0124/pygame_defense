@@ -13,13 +13,13 @@ def load_enemy_images():
 
 def load_map_image():
     """맵 타일 이미지 불러오기"""
-    map_image = pygame.image.load("assets/images/map/map.png")
+    map_image = pygame.image.load("assets/images/map/round_map.png").convert_alpha()
     
     return map_image
 
 def load_map_data():
     """맵 데이터 불러오기"""
-    with open('data/map_data.tmj') as file:
+    with open('data/round_map_data.tmj') as file:
         world_data = json.load(file)
 
     return world_data
