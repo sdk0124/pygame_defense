@@ -1,0 +1,132 @@
+{ "compressionlevel":-1,
+ "height":15,
+ "infinite":false,
+ "layers":[
+        {
+         "data":[42, 5, 11, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42,
+            42, 5, 8, 85, 126, 35, 15, 17, 19, 18, 121, 42, 42, 42, 42,
+            42, 5, 9, 85, 126, 2, 125, 26, 27, 124, 93, 42, 42, 42, 42,
+            42, 2, 11, 85, 126, 91, 8, 126, 126, 86, 9, 126, 42, 42, 42,
+            42, 3, 7, 85, 126, 4, 12, 126, 126, 5, 11, 126, 42, 42, 42,
+            42, 5, 11, 85, 126, 91, 95, 126, 126, 86, 11, 126, 42, 42, 42,
+            42, 1, 10, 85, 126, 1, 9, 126, 126, 4, 7, 126, 42, 42, 42,
+            42, 5, 12, 85, 126, 2, 11, 126, 126, 6, 93, 126, 42, 42, 42,
+            42, 4, 11, 85, 126, 3, 7, 126, 126, 86, 12, 126, 42, 42, 42,
+            42, 6, 7, 85, 126, 91, 95, 126, 126, 2, 7, 126, 42, 42, 42,
+            42, 5, 11, 85, 126, 2, 9, 126, 126, 3, 10, 126, 42, 42, 42,
+            42, 2, 8, 85, 126, 3, 11, 126, 126, 5, 12, 126, 42, 42, 42,
+            42, 6, 9, 85, 126, 91, 7, 126, 126, 5, 123, 14, 16, 98, 18,
+            42, 5, 123, 19, 20, 122, 11, 126, 126, 31, 106, 24, 21, 23, 112,
+            42, 71, 63, 66, 113, 26, 117, 126, 126, 126, 126, 126, 42, 42, 42],
+         "height":15,
+         "id":1,
+         "name":"map",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":15,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":2,
+         "name":"waypoints",
+         "objects":[
+                {
+                 "height":0,
+                 "id":1,
+                 "name":"",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":0,
+                         "y":895.625
+                        }, 
+                        {
+                         "x":254.914,
+                         "y":894.103
+                        }, 
+                        {
+                         "x":254.153,
+                         "y":128.599
+                        }, 
+                        {
+                         "x":509.068,
+                         "y":128.599
+                        }, 
+                        {
+                         "x":510.59,
+                         "y":829.423
+                        }, 
+                        {
+                         "x":856.056,
+                         "y":829.423
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":128.599,
+                 "y":0.760938
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }],
+ "nextlayerid":3,
+ "nextobjectid":2,
+ "orientation":"orthogonal",
+ "renderorder":"right-down",
+ "tiledversion":"1.11.2",
+ "tileheight":64,
+ "tilesets":[
+        {
+         "columns":42,
+         "firstgid":1,
+         "image":"map_sheet.png",
+         "imageheight":64,
+         "imagewidth":2688,
+         "margin":0,
+         "name":"map_spritesheet",
+         "spacing":0,
+         "tilecount":42,
+         "tileheight":64,
+         "tilewidth":64
+        }, 
+        {
+         "columns":43,
+         "firstgid":43,
+         "image":"..\/..\/..\/Downloads\/pixilart-sprite (5).png",
+         "imageheight":64,
+         "imagewidth":2752,
+         "margin":0,
+         "name":"t2",
+         "spacing":0,
+         "tilecount":43,
+         "tileheight":64,
+         "tilewidth":64
+        }, 
+        {
+         "columns":41,
+         "firstgid":86,
+         "image":"..\/..\/..\/Downloads\/pixilart-sprite (6).png",
+         "imageheight":64,
+         "imagewidth":2624,
+         "margin":0,
+         "name":"t3",
+         "spacing":0,
+         "tilecount":41,
+         "tileheight":64,
+         "tilewidth":64
+        }],
+ "tilewidth":64,
+ "type":"map",
+ "version":"1.10",
+ "width":15
+}
