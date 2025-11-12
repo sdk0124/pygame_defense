@@ -59,9 +59,22 @@ class Enemy(pygame.sprite.Sprite):
         
         self.rect.center = self.position
 
+    def drew_health_bar(self, surface):
+        """적 HP 바 그리기"""
+        ratio = max(self.hp / self.max_hp, 0)
+
+        bar_width = self.rect.width
+        bar_height = 10
+        bar_x = self.rect.x
+        bar_y = self.rect.y - 10
+
+        pygame.draw.rect(surface, (255, 0, 0), (bar_x, bar_y, bar_width, bar_height))
+        pygame.draw.rect(surface, (0, 255, 0), (bar_x, bar_y, bar_width * ratio, bar_height))
+
     def draw(self, surface):
         """적 스프라이트 그리기"""
         surface.blit(self.image, self.rect)
+        self.drew_health_bar(surface)
 
     def update(self):
         "적 상태 갱신"
@@ -85,17 +98,18 @@ if __name__ == "__main__":
 
     print(points)
 
-    enemy_images["byter"] = pygame.transform.scale(enemy_images["byter"], (64, 64))
-    enemy_images["worm"] = pygame.transform.scale(enemy_images["worm"], (64, 64))
-    enemy_images["boss"] = pygame.transform.scale(enemy_images["boss"], (128, 128))
+    # enemy_images["byter"] = pygame.transform.scale(enemy_images["byter"], (64, 64))
+    # enemy_images["worm"] = pygame.transform.scale(enemy_images["worm"], (64, 64))
+    # enemy_images["boss"] = pygame.transform.scale(enemy_images["boss"], (128, 128))
 
-    # new_enemy = Enemy("byter", points, enemy_images["byter"])
+    new_enemy = Enemy("byter", points, enemy_images["byter"])
     # new_enemy = Enemy("worm", points, enemy_images["worm"])
-    new_enemy = Enemy("boss", points, enemy_images["boss"])
+    # new_enemy = Enemy("boss", points, enemy_images["boss"])
 
     running = True
 
-    new_enemy.speed = 10
+    # 임시로 스피드 조정
+    new_enemy.speed = 5
 
     while running:
         clock.tick(FPS)
