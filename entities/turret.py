@@ -19,7 +19,42 @@ class Turret(pygame.sprite.Sprite):
         self.image = idle_image
         self.rect = self.image.get_rect()
         self.rect.center = (self.x, self.y)
-    
+
     def draw(self, surface):
         """터렛 그리기"""
         surface.blit(self.image, self.rect)
+
+### 테스트 코드 ###
+if __name__ == "__main__":
+
+    from core.settings import SCREEN_WIDTH, SCREEN_HEIGHT, FPS
+    from resource_loader import load_enemy_images, load_map_data, load_map_image, load_turret_images
+
+    pygame.init()
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    clock = pygame.time.Clock()
+
+    map_image = load_map_image()
+    map_data = load_map_data()
+    enemy_images = load_enemy_images()
+
+    turret_images = load_turret_images()
+
+    new_cannon = Turret(5, 5, "cannon", turret_images["cannon"]["idle"])
+    new_debugger = Turret(10, 10, "debugger", turret_images["debugger"]["idle"])
+
+    running = True
+
+    while running:
+        clock.tick(FPS)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        screen.blit(map_image, (0, 0))
+        new_cannon.draw(screen)
+        new_debugger.draw(screen)
+        pygame.display.flip()
+    
+    pygame.quit()
