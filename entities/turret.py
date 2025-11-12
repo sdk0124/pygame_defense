@@ -52,7 +52,7 @@ if __name__ == "__main__":
     turret_images = load_turret_images()
 
     new_cannon = Turret(4, 5, "cannon", turret_images["cannon"]["idle"])
-    new_debugger = Turret(11, 10, "debugger", turret_images["debugger"]["idle"])
+    new_debugger = Turret(4, 10, "debugger", turret_images["debugger"]["idle"])
 
     running = True
 
