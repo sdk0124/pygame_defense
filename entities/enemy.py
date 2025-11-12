@@ -98,16 +98,17 @@ if __name__ == "__main__":
 
     print(points)
 
-    enemy_images["byter"] = pygame.transform.scale(enemy_images["byter"], (64, 64))
-    enemy_images["worm"] = pygame.transform.scale(enemy_images["worm"], (64, 64))
-    enemy_images["boss"] = pygame.transform.scale(enemy_images["boss"], (128, 128))
+    # enemy_images["byter"] = pygame.transform.scale(enemy_images["byter"], (64, 64))
+    # enemy_images["worm"] = pygame.transform.scale(enemy_images["worm"], (64, 64))
+    # enemy_images["boss"] = pygame.transform.scale(enemy_images["boss"], (128, 128))
 
-    # new_enemy = Enemy("byter", points, enemy_images["byter"])
+    new_enemy = Enemy("byter", points, enemy_images["byter"])
     # new_enemy = Enemy("worm", points, enemy_images["worm"])
-    new_enemy = Enemy("boss", points, enemy_images["boss"])
+    # new_enemy = Enemy("boss", points, enemy_images["boss"])
 
     running = True
 
+    # 임시로 스피드 조정
     new_enemy.speed = 5
 
     while running:
