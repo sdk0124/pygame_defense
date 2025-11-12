@@ -20,8 +20,19 @@ class Turret(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (self.x, self.y)
 
+    def draw_range(self, surface):
+        """터렛 범위를 원 모양으로 그리기"""
+        range_surf = pygame.Surface((self.range * 2, self.range * 2), pygame.SRCALPHA)
+        pygame.draw.circle(range_surf, "grey100", (self.range, self.range), self.range)
+        range_surf.set_alpha(100)
+        range_rect = range_surf.get_rect()
+        range_rect.center = (self.x, self.y)
+
+        surface.blit(range_surf, range_rect)
+
     def draw(self, surface):
         """터렛 그리기"""
+        self.draw_range(surface)
         surface.blit(self.image, self.rect)
 
 ### 테스트 코드 ###
@@ -40,8 +51,8 @@ if __name__ == "__main__":
 
     turret_images = load_turret_images()
 
-    new_cannon = Turret(5, 5, "cannon", turret_images["cannon"]["idle"])
-    new_debugger = Turret(10, 10, "debugger", turret_images["debugger"]["idle"])
+    new_cannon = Turret(4, 5, "cannon", turret_images["cannon"]["idle"])
+    new_debugger = Turret(11, 10, "debugger", turret_images["debugger"]["idle"])
 
     running = True
 
