@@ -5,14 +5,14 @@
 WAVE_DATA = [
     {
         "enemies" : {"byter" : 5},
-        "spwan_delay" : 1000
+        "spawn_delay" : 1000
     },
     {
         "enemies" : {"byter" : 10},
-        "spwan_delay" : 1000
+        "spawn_delay" : 1000
     },
     {
         "enemies" : {"byter" : 5, "worm" : 5},
-        "spwan_delay" : 1000
+        "spawn_delay" : 1000
     }
 ]

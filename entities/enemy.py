@@ -1,6 +1,5 @@
 import pygame
 from pygame.math import Vector2
-from data.enemy_data import ENEMY_DATA
 
 #### 임시 함수 시작 #####
 points = []
@@ -21,13 +20,12 @@ def process_waypoints(data):
 #### 임시 함수 끝 #####
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, enemy_type, waypoints, image):
-        self.type = enemy_type
+    def __init__(self, enemy_data, waypoints, image):
         self.waypoints = waypoints
         self.target_waypoint_idx = 1
         self.position = Vector2(self.waypoints[0])
 
-        data = ENEMY_DATA[enemy_type]
+        data = enemy_data
         self.max_hp = data["max_hp"]
         self.hp = self.max_hp
         self.speed = data["speed"]
