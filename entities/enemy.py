@@ -1,33 +1,14 @@
 import pygame
 from pygame.math import Vector2
-from data.enemy_data import ENEMY_DATA
-
-#### 임시 함수 시작 #####
-points = []
-
-def process_data(map_data):
-    # look through data to extract info
-    for layer in map_data["layers"]:
-        if layer["name"] == "waypoints":
-            for obj in layer["objects"]:
-                process_waypoints(obj)
-
-def process_waypoints(data):
-    # iterate through waypoints to extract x, y
-    x = data['x']
-    y = data['y']
-    points.append((x, y))
-
-#### 임시 함수 끝 #####
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, enemy_type, waypoints, image):
-        self.type = enemy_type
+    def __init__(self, enemy_data, waypoints, image):
+        super().__init__()
         self.waypoints = waypoints
         self.target_waypoint_idx = 1
         self.position = Vector2(self.waypoints[0])
 
-        data = ENEMY_DATA[enemy_type]
+        data = enemy_data
         self.max_hp = data["max_hp"]
         self.hp = self.max_hp
         self.speed = data["speed"]
@@ -79,49 +60,3 @@ class Enemy(pygame.sprite.Sprite):
     def update(self):
         "적 상태 갱신"
         self.move()
-
-
-### 테스트 코드 ###
-if __name__ == "__main__":
-
-    from core.settings import SCREEN_WIDTH, SCREEN_HEIGHT, FPS
-    from resource_loader import load_enemy_images, load_map_data, load_map_image
-
-    pygame.init()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    clock = pygame.time.Clock()
-
-    map_image = load_map_image()
-    map_data = load_map_data()
-    enemy_images = load_enemy_images()
-    process_data(map_data)
-
-    print(points)
-
-    # enemy_images["byter"] = pygame.transform.scale(enemy_images["byter"], (64, 64))
-    # enemy_images["worm"] = pygame.transform.scale(enemy_images["worm"], (64, 64))
-    # enemy_images["boss"] = pygame.transform.scale(enemy_images["boss"], (128, 128))
-
-    new_enemy = Enemy("byter", points, enemy_images["byter"])
-    # new_enemy = Enemy("worm", points, enemy_images["worm"])
-    # new_enemy = Enemy("boss", points, enemy_images["boss"])
-
-    running = True
-
-    # 임시로 스피드 조정
-    new_enemy.speed = 5
-
-    while running:
-        clock.tick(FPS)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-
-        screen.blit(map_image, (0, 0))
-        new_enemy.update()
-        new_enemy.draw(screen)
-        pygame.display.flip()
-    
-    pygame.quit()
