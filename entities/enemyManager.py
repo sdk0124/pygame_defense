@@ -45,3 +45,63 @@ class EnemyManager:
         "모든 적 그리기"
         for enemy in self.enemies:
             enemy.draw(surface)
+
+### 테스트 코드 ###
+if __name__ == "__main__":
+
+    from core.settings import SCREEN_WIDTH, SCREEN_HEIGHT, FPS
+    from resource_loader import load_enemy_images, load_map_data, load_map_image
+
+    #### 임시 함수 시작 #####
+    points = []
+
+    def process_data(map_data):
+        # look through data to extract info
+        for layer in map_data["layers"]:
+            if layer["name"] == "waypoints":
+                for obj in layer["objects"]:
+                    process_waypoints(obj)
+
+    def process_waypoints(data):
+        # iterate through waypoints to extract x, y
+        x = data['x']
+        y = data['y']
+        points.append((x, y))
+
+    #### 임시 함수 끝 #####
+
+    #### 임시 import ####
+    from data.wave_data import WAVE_DATA
+    from data.enemy_data import ENEMY_DATA
+    
+    pygame.init()
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    clock = pygame.time.Clock()
+
+    map_image = load_map_image()
+    map_data = load_map_data()
+    enemy_images = load_enemy_images()
+    process_data(map_data)
+
+    print(points)
+
+    running = True
+
+    round_level = 3
+
+    enemy_manager = EnemyManager(points, ENEMY_DATA, enemy_images)
+    enemy_manager.set_wave(round_level - 1, WAVE_DATA)
+
+    while running:
+        clock.tick(FPS)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        screen.blit(map_image, (0, 0))
+        enemy_manager.update(FPS)
+        enemy_manager.draw(screen)
+        pygame.display.flip()
+    
+    pygame.quit()

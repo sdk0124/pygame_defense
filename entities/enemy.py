@@ -21,6 +21,7 @@ def process_waypoints(data):
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, enemy_data, waypoints, image):
+        super().__init__()
         self.waypoints = waypoints
         self.target_waypoint_idx = 1
         self.position = Vector2(self.waypoints[0])
@@ -115,7 +116,6 @@ if __name__ == "__main__":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
 
         screen.blit(map_image, (0, 0))
         new_enemy.update()
