@@ -16,7 +16,7 @@ class GameScene(Scene):
         super().__init__(game)
         self.score = 0
         self.money = 0
-        self.current_round = 3
+        self.current_round = 1
         self.wave_active = False
         self.wave_data = WAVE_DATA
 
@@ -31,11 +31,13 @@ class GameScene(Scene):
         self.round_start_btn = Button(800, 400, 200, 60, "Round Start!")
 
     def create_enemy_manager(self):
+        """enemyManager 생성"""
         enemy_images = load_enemy_images()
         waypoints = self.world.get_waypoints()
         return EnemyManager(waypoints, ENEMY_DATA, enemy_images)
 
     def go_to_game_end(self):
+        """게임 오버 화면으로 이동"""
         from scenes.end_scene import GameOverScene
         self.switch_to(GameOverScene(self.game, final_score=0))
 
@@ -47,13 +49,21 @@ class GameScene(Scene):
             if self.end_button.handle_event(event):
                 self.go_to_game_end()
                 
-            if self.round_start_btn.handle_event(event):
+            if not self.wave_active and self.round_start_btn.handle_event(event):
+                """
+                현재 웨이브가 비활성화 상태이고,
+                그 때 유저가 '웨이브 시작' 버튼을 누르면 웨이브 생성
+                """
                 self.enemy_manager.set_wave(self.current_round - 1, self.wave_data)
                 self.wave_active = True
 
     def update(self, dt):
         if self.wave_active:
             self.enemy_manager.update(dt)
+
+            if self.enemy_manager.is_wave_done():
+                self.wave_active = False
+                print("웨이브 종료") # 확인용
 
     def draw(self, screen):
         self.world.draw(screen)
