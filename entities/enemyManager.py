@@ -15,6 +15,10 @@ class EnemyManager:
 
     def set_wave(self, cur_wave_idx, wave_data):
         """라운드 시작 시 만들어야 할 적 목록 세팅"""
+        self.spawn_timer = 0
+        self.wave_queue.clear()
+        self.enemies.empty()
+    
         spawn_enemy_data = wave_data[cur_wave_idx]["enemies"]
         self.spawn_delay = wave_data[cur_wave_idx]["spawn_delay"]
 
@@ -24,15 +28,20 @@ class EnemyManager:
         
         print(self.wave_queue) # 체크용도
     
+    def is_wave_done(self):
+        """더 이상 생성할 적도 없고, 살아있는 적도 없는지 확인"""
+        return not self.wave_queue and len(self.enemies) == 0
+
     def spwan_enemy(self):
         """매 스폰 주기마다 적 생성"""
-        while self.spawn_timer >= self.spawn_delay and self.wave_queue:
+        while self.spawn_timer >= self.spawn_delay and len(self.wave_queue) != 0:
             enemy_type = self.wave_queue.popleft()
             enemy_data = self.enemy_data_table[enemy_type]
             new_enemy = Enemy(enemy_data, self.waypoints, self.image_table[enemy_type])
             self.enemies.add(new_enemy)
 
             self.spawn_timer -= self.spawn_delay
+            print(len(self.wave_queue)) # 확인용
 
     def update(self, dt):
         "모든 적 상태 갱신"
@@ -40,7 +49,7 @@ class EnemyManager:
         self.spwan_enemy()
     
         for enemy in self.enemies:
-            enemy.move(dt)
+            enemy.update(dt)
         
     def draw(self, surface):
         "모든 적 그리기"
