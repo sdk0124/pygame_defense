@@ -19,7 +19,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = self.position
 
-    def move(self):
+    def move(self, dt):
         """waypoint에 맞춰서 적이 이동"""
         if self.target_waypoint_idx < len(self.waypoints):
             self.target = Vector2(self.waypoints[self.target_waypoint_idx])
@@ -30,9 +30,10 @@ class Enemy(pygame.sprite.Sprite):
             # self.kill()
 
         dist = self.movement.length()
+        move_amount = self.speed * (dt / 1000)
 
-        if dist >= self.speed:
-            self.position += self.movement.normalize() * self.speed
+        if dist >= move_amount:
+            self.position += self.movement.normalize() * move_amount
         else:
             if dist != 0:
                 self.position += self.movement.normalize() * dist

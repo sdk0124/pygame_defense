@@ -16,8 +16,9 @@ class Game:
 
     def run(self):
         while self.running:
+            dt = self.clock.tick(FPS)
             state = self.scene_manager.get_scene()
             state.handle_events()
-            state.update(FPS)
+            state.update(dt)
             state.draw(self.screen)
             pygame.display.flip()

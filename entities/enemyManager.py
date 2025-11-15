@@ -26,12 +26,13 @@ class EnemyManager:
     
     def spwan_enemy(self):
         """매 스폰 주기마다 적 생성"""
-        if (self.spawn_timer >= self.spawn_delay and len(self.wave_queue) != 0):
+        while self.spawn_timer >= self.spawn_delay and self.wave_queue:
             enemy_type = self.wave_queue.popleft()
             enemy_data = self.enemy_data_table[enemy_type]
             new_enemy = Enemy(enemy_data, self.waypoints, self.image_table[enemy_type])
             self.enemies.add(new_enemy)
-            self.spawn_timer = 0
+
+            self.spawn_timer -= self.spawn_delay
 
     def update(self, dt):
         "모든 적 상태 갱신"
@@ -39,7 +40,7 @@ class EnemyManager:
         self.spwan_enemy()
     
         for enemy in self.enemies:
-            enemy.move()
+            enemy.move(dt)
         
     def draw(self, surface):
         "모든 적 그리기"
