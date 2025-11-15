@@ -3,32 +3,42 @@
 import pygame
 from scenes.scene import Scene
 
-from ui.sample_button import Button
+from ui.image_button import ImageButton
+from ui.ui_manager import UIManager
+from ui.label import Label
+from core.settings import UI_PATH_START_SCENE
 
 class StartScene(Scene):
     def __init__(self, game):
         super().__init__(game)
         self.game = game
-        self.font = pygame.font.Font(None, 80)
-        self.title = self.font.render("CPU DEFENSE", True, (255, 255, 255))
+        self.uis = self.prepare_uis()
 
-        self.start_button = Button(300, 400, 200, 60, "START")
+    # 씬 전환
+    def game_start(self):
+        from scenes.game_scene import GameScene
+        self.switch_to(GameScene(self.game))
+
+    # ui manager 생성
+    def prepare_uis(self) -> UIManager:
+        # start_button = ImageButton(300, 400, 200, 60, None, "START", action=self.game_start)
+        # title = Label(220, 200, 0, "CPU DEFENSE", 80)
+        uis = UIManager()
+        uis.load_uis(UI_PATH_START_SCENE, {"game_start": self.game_start})
+
+        return uis
 
     def handle_events(self) -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-
                 self.game.running = False
 
-            if self.start_button.handle_event(event):
-
-                from scenes.game_scene import GameScene
-                self.switch_to(GameScene(self.game))
+            # ui event 처리
+            self.uis.handle_events(event)
         
     def update(self, dt) -> None:
         pass
 
     def draw(self, screen):
         screen.fill((20, 20, 20))
-        screen.blit(self.title, (220, 200))
-        self.start_button.draw(screen)
+        self.uis.draw(screen)
