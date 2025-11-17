@@ -1,0 +1,77 @@
+{
+    "objects": [
+        {
+            "type": "image",
+            "x": 960,
+            "y": 0,
+            "width": 300,
+            "height": 960,
+            "image_path": "assets/default_button.png",
+            "layer": 0
+        },
+        {
+            "type": "label",
+            "x": 967,
+            "y": 338,
+            "text": "\ud130\ub81b \uc815\ubcf4",
+            "color": [
+                255,
+                255,
+                255
+            ],
+            "font_size": 30,
+            "layer": 0
+        },
+        {
+            "type": "label",
+            "x": 966,
+            "y": 168,
+            "text": "\ud130\ub81b",
+            "color": [
+                255,
+                255,
+                255
+            ],
+            "font_size": 40,
+            "layer": 0
+        },
+        {
+            "type": "button",
+            "x": 1012,
+            "y": 37,
+            "width": 200,
+            "height": 80,
+            "text": "\uc6e8\uc774\ube0c \uc2dc\uc791",
+            "image_path": "",
+            "color": [
+                0,
+                120,
+                255
+            ],
+            "font_size": 32,
+            "corner_radius": 15,
+            "action": "start_wave",
+            "sound": null,
+            "layer": 0
+        },
+        {
+            "type": "button",
+            "x": 998,
+            "y": 825,
+            "width": 221,
+            "height": 80,
+            "text": "\uac8c\uc784 \uc624\ubc84 \ud654\uba74\uc73c\ub85c",
+            "image_path": "",
+            "color": [
+                0,
+                120,
+                255
+            ],
+            "font_size": 24,
+            "corner_radius": 15,
+            "action": "go_to_game_end",
+            "sound": null,
+            "layer": 0
+        }
+    ]
+}
