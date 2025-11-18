@@ -6,6 +6,7 @@ from data.turret_data import TURRET_DATA
 
 class Turret(pygame.sprite.Sprite):
     def __init__(self, tile_x, tile_y, turret_type, idle_image, attack_images):
+        super().__init__()
         self.tile_x = tile_x
         self.tile_y = tile_y
         self.x = (tile_x + 0.5) * CELL_SIZE
