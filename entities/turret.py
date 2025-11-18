@@ -108,7 +108,7 @@ class Turret(pygame.sprite.Sprite):
         if self.target is None:
             return
         
-        # 추후에 enemy class에 take_damage 메소드를 호출.
+        self.target.take_damage(self.damage)
         print("터렛이 공격했습니다.")
         
         self.is_attack_anim_playing = True
