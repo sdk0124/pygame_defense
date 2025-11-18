@@ -1,18 +1,15 @@
 import pygame
 import math
 
-from core.settings import CELL_SIZE
-from data.turret_data import TURRET_DATA
-
 class Turret(pygame.sprite.Sprite):
-    def __init__(self, tile_x, tile_y, turret_type, idle_image, attack_images):
+    def __init__(self, tile_x, tile_y, cell_size, turret_data, idle_image, attack_images):
         super().__init__()
         self.tile_x = tile_x
         self.tile_y = tile_y
-        self.x = (tile_x + 0.5) * CELL_SIZE
-        self.y = (tile_y + 0.5) * CELL_SIZE
+        self.x = (tile_x + 0.5) * cell_size
+        self.y = (tile_y + 0.5) * cell_size
 
-        data = TURRET_DATA[turret_type]
+        data = turret_data
         self.damage = data["damage"]
         self.range = data["range"]
         self.fire_rate = data["fire_rate"]
