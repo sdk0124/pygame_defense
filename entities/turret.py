@@ -53,26 +53,39 @@ class Turret(pygame.sprite.Sprite):
 
     def _update_target(self, enemies):
         """터렛의 가장 가까운 타겟 적 업데이트"""
+        """
+        스티키 타겟팅 : 
+        한 번 적이 범위 내로 들어오면 죽거나 범위 밖을 나갈 때까지 변화 X
+        """
+        range_sq = self.range * self.range
+
+        # 현재 타겟이 유효하면 그대로 유지
         if self.target is not None:
-            if (not self.target.alive()) or (self._distance_sq(self.target) > self.range * self.range):
-                self.target = None
+            # 타겟이 아직 살아있고 사거리 안에 있으면 그대로 둔다.
+            if self.target.alive() and (self._distance_sq(self.target) <= self.range * self.range):
+                # print("타겟이 있습니다.")
+                return
+            # 그렇지 않으면 타겟 해제
+            self.target = None
 
-        if self.target is None:
-            nearest = None
-            nearest_dist_sq = None
+        # 타겟이 없으면 새로 탐색
+        # print("타겟이 없습니다..")
+        nearest = None
+        nearest_dist_sq = range_sq
 
-            for enemy in enemies:
-                # enemy가 죽었으면 스킵
-                if not enemy.alive():
-                    continue
+        for enemy in enemies:
+            # enemy가 죽었으면 스킵
+            if not enemy.alive():
+                continue
 
-                dist_sq = self._distance_sq(enemy)
-                if dist_sq <= self.range * self.range:
-                    if nearest is None or dist_sq < nearest_dist_sq:
-                        nearest = enemy
-                        nearest_dist_sq = dist_sq
+            # 사거리 안에 들어온 적들이 후보
+            dist_sq = self._distance_sq(enemy)
+            if dist_sq <= range_sq and (nearest is None or dist_sq < nearest_dist_sq):
+                nearest = enemy
+                nearest_dist_sq = dist_sq
 
-            self.target = nearest
+        # 새 타겟 설정 (없으면 None 유지됨.)
+        self.target = nearest
     
     def _distance_sq(self, enemy):
         """터렛과 적과의 거리 계산"""
@@ -120,7 +133,7 @@ class Turret(pygame.sprite.Sprite):
 
             # 현재 시간이 몇 번째 프레임인지
             self.anim_idx = int(self.attack_anim_time / frame_time)
-            print(self.anim_idx) # 테스트용
+            # print(self.anim_idx) # 테스트용
 
             if self.anim_idx >= frame_count:
                 # 애니메이션 끝 -> idle로 복귀
@@ -215,7 +228,7 @@ if __name__ == "__main__":
     cannon_attack_images = set_attack_images(turret_images["cannon"]["attack"])
     debugger_attack_images = set_attack_images(turret_images["debugger"]["attack"])
 
-    print(len(debugger_attack_images))
+    # print(len(debugger_attack_images))
 
     new_cannon = Turret(4, 5, "cannon", turret_images["cannon"]["idle"], cannon_attack_images)
     new_debugger = Turret(4, 10, "debugger", turret_images["debugger"]["idle"], debugger_attack_images)
@@ -223,7 +236,9 @@ if __name__ == "__main__":
     new_cannon.fire_rate = 0.5 # 임시로 수정
     new_debugger.fire_rate = 0.25 # 임시로 수정
 
-    cur_wave_round = 1
+    new_debugger.range = 400 # 임시로 수정
+
+    cur_wave_round = 3
     wave_data = WAVE_DATA
 
     enemy_manager = EnemyManager(world.get_waypoints(), ENEMY_DATA, enemy_images)
