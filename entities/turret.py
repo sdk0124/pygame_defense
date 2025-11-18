@@ -6,7 +6,7 @@ from data.turret_data import TURRET_DATA
 
 
 class Turret(pygame.sprite.Sprite):
-    def __init__(self, tile_x, tile_y, turret_type, idle_image):
+    def __init__(self, tile_x, tile_y, turret_type, idle_image, attack_images):
         self.tile_x = tile_x
         self.tile_y = tile_y
         self.x = (tile_x + 0.5) * CELL_SIZE
@@ -19,7 +19,16 @@ class Turret(pygame.sprite.Sprite):
         self.purchase_price = data["purchase_price"]
         self.sell_price = data["sell_price"]
 
-        self.image = idle_image
+        self.state = "idle" # 기본값 : 대기 상태
+
+        self.idle_base_image = idle_image   # 대기 이미지
+        self.attack_base_images = attack_images # 공격 이미지 (리스트)
+        self.current_image = self.idle_base_image
+        self.frame_speed = 0.08
+        self.anim_timer = 0.0
+        self.anim_idx = 0
+
+        self.image = self.current_image
         self.rect = self.image.get_rect()
         self.rect.center = (self.x, self.y)
 
@@ -84,11 +93,35 @@ class Turret(pygame.sprite.Sprite):
         # 추후에 enemy class에 take_damage 메소드를 호출.
         pass
 
+    def _update_animation(self, dt):
+        """터렛의 상태에 따라 보여지는 이미지가 다르다"""
+        # 대기 상태일 경우
+        if self.state == "idle":
+            self.current_image = self.idle_base_image
+            self.anim_idx = 0
+            self.anim_timer = 0.0
+            return
+
+        # 공격 상태일 경우
+        self.anim_timer += dt * (1.0 / self.frame_speed)
+        if self.anim_timer >= 1.0:
+            self.anim_timer -= 1.0
+            self.anim_idx += 1
+            if self.anim_idx >= len(self.attack_base_images):
+                self.anim_idx = 0
+        
+        self.current_image = self.attack_base_images[self.anim_idx]
+
     def update(self, dt, enemies):
         self._update_target(enemies)
 
         if self.target is not None:
             self._try_attack(dt)
+            self.state = "attack"
+        else:
+            self.state = "idle"
+        
+        self._update_animation(dt)
 
     def draw(self, surface):
         """터렛 그리기"""
