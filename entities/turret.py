@@ -1,6 +1,9 @@
 import pygame
+import math
+
 from core.settings import CELL_SIZE
 from data.turret_data import TURRET_DATA
+
 
 class Turret(pygame.sprite.Sprite):
     def __init__(self, tile_x, tile_y, turret_type, idle_image):
@@ -20,6 +23,8 @@ class Turret(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (self.x, self.y)
 
+        self.target = None
+
     def draw_range(self, surface):
         """터렛 범위를 원 모양으로 그리기"""
         range_surf = pygame.Surface((self.range * 2, self.range * 2), pygame.SRCALPHA)
@@ -29,6 +34,35 @@ class Turret(pygame.sprite.Sprite):
         range_rect.center = (self.x, self.y)
 
         surface.blit(range_surf, range_rect)
+
+    def _update_target(self, enemies):
+        """터렛의 가장 가까운 타겟 적 업데이트"""
+        if self.target is not None:
+            if (not self.target.alive()) or (self._distance_sq(self.target) > self.range * self.range):
+                self.target = None
+
+        if self.target is None:
+            nearest = None
+            nearest_dist_sq = None
+
+            for enemy in enemies:
+                # enemy가 죽었으면 스킵
+                if not enemy.alive():
+                    continue
+
+                dist_sq = self._distance_sq(enemy)
+                if dist_sq <= self.range * self.range:
+                    if nearest is None or dist_sq < nearest_dist_sq:
+                        nearest = enemy
+                        nearest_dist_sq = dist_sq
+
+            self.target = nearest
+    
+    def _distance_sq(self, enemy):
+        """터렛과 적과의 거리 계산"""
+        dx = enemy.position[0] - self.x
+        dy = enemy.position[1] - self.y
+        return (dx * dx) + (dy * dy)         
 
     def draw(self, surface):
         """터렛 그리기"""
