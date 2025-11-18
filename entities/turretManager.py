@@ -44,3 +44,83 @@ class TurretManager:
     def draw(self, surface):
         for turret in self.turrets:
             turret.draw(surface)
+
+### 테스트 코드 ###
+if __name__ == "__main__":
+
+    from core.settings import SCREEN_WIDTH, SCREEN_HEIGHT, FPS, CELL_SIZE, COLS
+    from resource_loader import load_enemy_images, load_map_data, load_map_image, load_turret_images
+    
+    from entities.enemyManager import EnemyManager
+    from entities.world import World
+
+    from data.turret_data import TURRET_DATA
+    from data.enemy_data import ENEMY_DATA
+    from data.wave_data import WAVE_DATA
+
+    ### 임시 함수 및 임시 상수 ###
+
+    TURRET_ANIM_STEPS = 6
+
+    def set_attack_images(attack_spritesheet):
+        size = attack_spritesheet.get_height()
+        attack_images = []
+
+        for x in range(TURRET_ANIM_STEPS):
+            temp_image = attack_spritesheet.subsurface(x * size, 0, size, size)
+            attack_images.append(temp_image)
+
+        return attack_images
+
+    def set_tile_map(map_data):
+        for layer in map_data["layers"]:
+            if layer["name"] == "tilemap":
+                return layer["data"]
+
+    ### 임시 함수 및 임시 상수 끝 ###
+
+
+    pygame.init()
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    clock = pygame.time.Clock()
+
+    world = World(load_map_data(), load_map_image())
+    world.process_data()
+
+    tilemap = set_tile_map(world.map_data) # 임시
+    print(tilemap) # 임시
+
+    enemy_images = load_enemy_images()
+    turret_images = load_turret_images()
+
+    cur_wave_round = 3
+    wave_data = WAVE_DATA
+
+    enemy_manager = EnemyManager(world.get_waypoints(), ENEMY_DATA, enemy_images)
+    enemy_manager.set_wave(cur_wave_round - 1, wave_data)
+
+    turret_manager = TurretManager(tilemap, TURRET_DATA, turret_images)
+
+    running = True
+
+    while running:
+        dt = clock.tick(FPS)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                mouse_pos = pygame.mouse.get_pos()
+                turret_manager.create_turret(mouse_pos, CELL_SIZE, COLS, "cannon")
+            
+        world.draw(screen)
+
+        enemy_manager.update(dt)
+        turret_manager.update(dt, enemy_manager.enemies)
+
+        enemy_manager.draw(screen)
+        turret_manager.draw(screen)
+
+        pygame.display.flip()
+    
+    pygame.quit()
