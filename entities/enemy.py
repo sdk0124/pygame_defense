@@ -14,6 +14,7 @@ class Enemy(pygame.sprite.Sprite):
         self.speed = data["speed"]
         self.money = data["money"]
         self.score = data["score"]
+        self.is_dead = False
 
         self.image = image
         self.rect = self.image.get_rect()
@@ -40,6 +41,18 @@ class Enemy(pygame.sprite.Sprite):
             self.target_waypoint_idx += 1
         
         self.rect.center = self.position
+
+    def take_damage(self, damage):
+        """적 피격"""
+        self.hp -= damage
+
+        # 적 사망 시 돈과 점수를 반환
+        if self.hp <= 0 and not self.is_dead:
+            self.is_dead = True
+            print("적 처치") # 테스트용
+            self.kill()
+            return {'money' : self.money, 'score' : self.score}
+        return None
 
     def drew_health_bar(self, surface):
         """적 HP 바 그리기"""
