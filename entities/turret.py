@@ -25,6 +25,8 @@ class Turret(pygame.sprite.Sprite):
 
         self.target = None
 
+        self.time_since_last_shot = 0.0   # 마지막으로 공격한 시각
+
     def draw_range(self, surface):
         """터렛 범위를 원 모양으로 그리기"""
         range_surf = pygame.Surface((self.range * 2, self.range * 2), pygame.SRCALPHA)
@@ -63,6 +65,30 @@ class Turret(pygame.sprite.Sprite):
         dx = enemy.position[0] - self.x
         dy = enemy.position[1] - self.y
         return (dx * dx) + (dy * dy)         
+
+    def _try_attack(self, dt):
+        """공격 쿨다운"""
+        self.time_since_last_shot += dt
+
+        attack_interval = 1.0 / self.fire_rate
+
+        if self.time_since_last_shot >= attack_interval:
+            self.time_since_last_shot -= attack_interval
+            self.attack()
+
+    def attack(self):
+        """실제 공격 로직"""
+        if self.target is None:
+            return
+        
+        # 추후에 enemy class에 take_damage 메소드를 호출.
+        pass
+
+    def update(self, dt, enemies):
+        self._update_target(enemies)
+
+        if self.target is not None:
+            self._try_attack(dt)
 
     def draw(self, surface):
         """터렛 그리기"""
