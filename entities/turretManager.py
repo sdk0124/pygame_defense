@@ -12,7 +12,7 @@ class TurretManager:
     def create_turret(self, mouse_pos, tile_size, col, turret_type):
         """해당 타일에 터렛 설치"""
         grid_x = mouse_pos[0] // tile_size
-        grid_y = mouse_pos[0] // tile_size
+        grid_y = mouse_pos[1] // tile_size
 
         mouse_tile_num = (grid_y * col) + grid_x
 
@@ -74,7 +74,7 @@ if __name__ == "__main__":
 
     def set_tile_map(map_data):
         for layer in map_data["layers"]:
-            if layer["name"] == "tilemap":
+            if layer["name"] == "round_map":
                 return layer["data"]
 
     ### 임시 함수 및 임시 상수 끝 ###
