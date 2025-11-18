@@ -27,6 +27,10 @@ class Turret(pygame.sprite.Sprite):
         self.anim_timer = 0.0
         self.anim_idx = 0
 
+        self.is_attack_anim_playing = False # 공격 애니메이션 재생 여부
+        self.attack_anim_time = 0.0 # 공격 애니메이션 경과 시간
+        self.attack_anim_total_time = 0.3   # 공격 애니메이션 재생 총 길이(초)
+
         self.image = self.current_image
         self.rect = self.image.get_rect()
         self.rect.center = (self.x, self.y)
@@ -70,8 +74,8 @@ class Turret(pygame.sprite.Sprite):
     
     def _distance_sq(self, enemy):
         """터렛과 적과의 거리 계산"""
-        dx = enemy.position[0] - self.x
-        dy = enemy.position[1] - self.y
+        dx = enemy.position.x - self.x
+        dy = enemy.position.y - self.y
         return (dx * dx) + (dy * dy)         
 
     def _try_attack(self, dt):
@@ -90,42 +94,61 @@ class Turret(pygame.sprite.Sprite):
             return
         
         # 추후에 enemy class에 take_damage 메소드를 호출.
-        pass
+        print("터렛이 공격했습니다.")
+        
+        self.is_attack_anim_playing = True
+        self.attack_anim_time = 0.0
+        self.anim_idx = 0
 
     def _update_animation(self, dt):
-        """터렛의 상태에 따라 보여지는 이미지가 다르다"""
-        # 대기 상태일 경우
-        if self.state == "idle":
-            self.current_image = self.idle_base_image
-            self.anim_idx = 0
-            self.anim_timer = 0.0
+        """터렛의 상태에 따라 재생하는 이미지 설정"""
+        # 1 : 공격 상태일 때
+        if self.is_attack_anim_playing:
+            self.attack_anim_time += dt
+
+            frame_count = len(self.attack_base_images)
+            if frame_count == 0:
+                # 혹시 리스트 비어 있으면 그냥 종료
+                self.is_attack_anim_playing = False
+                self.current_image = self.idle_base_image
+                return
+
+            # 한 번 공격 애니메이션 전체 길이 (원하는 값으로 조절)
+            frame_time = self.attack_anim_total_time / frame_count
+
+            # 현재 시간이 몇 번째 프레임인지
+            self.anim_idx = int(self.attack_anim_time / frame_time)
+            print(self.anim_idx) # 테스트용
+
+            if self.anim_idx >= frame_count:
+                # 애니메이션 끝 -> idle로 복귀
+                self.is_attack_anim_playing = False
+                self.current_image = self.idle_base_image
+                self.anim_idx = 0
+                return
+
+            # 아직 애니메이션 진행 중이면 해당 프레임 사용
+            self.current_image = self.attack_base_images[self.anim_idx]
             return
 
-        # 공격 상태일 경우
-        self.anim_timer += dt * (1.0 / self.frame_speed)
-        if self.anim_timer >= 1.0:
-            self.anim_timer -= 1.0
-            self.anim_idx += 1
-            if self.anim_idx >= len(self.attack_base_images):
-                self.anim_idx = 0
-        
-        self.current_image = self.attack_base_images[self.anim_idx]
+        # 2 : 공격 애니메이션이 재생 중이 아닐 때 = 항상 idle 이미지
+        self.current_image = self.idle_base_image
 
     def update(self, dt, enemies):
         self._update_target(enemies)
 
         if self.target is not None:
-            self._try_attack(dt)
             self.state = "attack"
         else:
             self.state = "idle"
         
+        self._try_attack(dt)
         self._update_animation(dt)
 
     def draw(self, surface):
         """터렛 그리기"""
         self.draw_range(surface)
-        surface.blit(self.image, self.rect)
+        surface.blit(self.current_image, self.rect)
 
 ### 테스트 코드 ###
 if __name__ == "__main__":
@@ -169,10 +192,12 @@ if __name__ == "__main__":
     cannon_attack_images = set_attack_images(turret_images["cannon"]["attack"])
     debugger_attack_images = set_attack_images(turret_images["debugger"]["attack"])
 
-    new_cannon = Turret(4, 5, "cannon", turret_images["cannon"]["idle"], cannon_attack_images)
+    print(len(debugger_attack_images))
+
+    # new_cannon = Turret(4, 5, "cannon", turret_images["cannon"]["idle"], cannon_attack_images)
     new_debugger = Turret(4, 10, "debugger", turret_images["debugger"]["idle"], debugger_attack_images)
 
-    new_cannon.fire_rate = 0.5 # 임시로 수정
+    # new_cannon.fire_rate = 0.5 # 임시로 수정
     new_debugger.fire_rate = 0.25 # 임시로 수정
 
     cur_wave_round = 1
@@ -193,11 +218,11 @@ if __name__ == "__main__":
         world.draw(screen)
 
         enemy_manager.update(dt)
-        new_cannon.update(dt, enemy_manager.enemies)
-        new_debugger.update(dt, enemy_manager.enemies)
+        # new_cannon.update(dt, enemy_manager.enemies)
+        new_debugger.update(dt / 1000, enemy_manager.enemies)
 
         enemy_manager.draw(screen)
-        new_cannon.draw(screen)
+        # new_cannon.draw(screen)
         new_debugger.draw(screen)
         pygame.display.flip()
     
