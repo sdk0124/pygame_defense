@@ -4,7 +4,6 @@ import math
 from core.settings import CELL_SIZE
 from data.turret_data import TURRET_DATA
 
-
 class Turret(pygame.sprite.Sprite):
     def __init__(self, tile_x, tile_y, turret_type, idle_image, attack_images):
         self.tile_x = tile_x
@@ -133,30 +132,71 @@ if __name__ == "__main__":
 
     from core.settings import SCREEN_WIDTH, SCREEN_HEIGHT, FPS
     from resource_loader import load_enemy_images, load_map_data, load_map_image, load_turret_images
+    
+    from entities.enemyManager import EnemyManager
+    from entities.world import World
+
+    from data.enemy_data import ENEMY_DATA
+    from data.wave_data import WAVE_DATA
+
+    ### 임시 함수 및 임시 상수 ###
+
+    TURRET_ANIM_STEPS = 6
+
+    def set_attack_images(attack_spritesheet):
+        size = attack_spritesheet.get_height()
+        attack_images = []
+
+        for x in range(TURRET_ANIM_STEPS):
+            temp_image = attack_spritesheet.subsurface(x * size, 0, size, size)
+            attack_images.append(temp_image)
+
+        return attack_images
+
+    ### 임시 함수 및 임시 상수 끝 ###
+
 
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
 
-    map_image = load_map_image()
-    map_data = load_map_data()
-    enemy_images = load_enemy_images()
+    world = World(load_map_data(), load_map_image())
+    world.process_data()
 
+    enemy_images = load_enemy_images()
     turret_images = load_turret_images()
 
-    new_cannon = Turret(4, 5, "cannon", turret_images["cannon"]["idle"])
-    new_debugger = Turret(4, 10, "debugger", turret_images["debugger"]["idle"])
+    cannon_attack_images = set_attack_images(turret_images["cannon"]["attack"])
+    debugger_attack_images = set_attack_images(turret_images["debugger"]["attack"])
+
+    new_cannon = Turret(4, 5, "cannon", turret_images["cannon"]["idle"], cannon_attack_images)
+    new_debugger = Turret(4, 10, "debugger", turret_images["debugger"]["idle"], debugger_attack_images)
+
+    new_cannon.fire_rate = 0.5 # 임시로 수정
+    new_debugger.fire_rate = 0.25 # 임시로 수정
+
+    cur_wave_round = 1
+    wave_data = WAVE_DATA
+
+    enemy_manager = EnemyManager(world.get_waypoints(), ENEMY_DATA, enemy_images)
+    enemy_manager.set_wave(cur_wave_round - 1, wave_data)
 
     running = True
 
     while running:
-        clock.tick(FPS)
+        dt = clock.tick(FPS)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        screen.blit(map_image, (0, 0))
+        world.draw(screen)
+
+        enemy_manager.update(dt)
+        new_cannon.update(dt, enemy_manager.enemies)
+        new_debugger.update(dt, enemy_manager.enemies)
+
+        enemy_manager.draw(screen)
         new_cannon.draw(screen)
         new_debugger.draw(screen)
         pygame.display.flip()
