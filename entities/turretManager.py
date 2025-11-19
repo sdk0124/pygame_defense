@@ -9,10 +9,16 @@ class TurretManager:
         self.turret_image_table = turret_image_table
         self.turrets = pygame.sprite.Group()
 
-    def create_turret(self, mouse_pos, max_width, max_height, tile_size, col, turret_type):
+    def create_turret(self, mouse_pos, max_width, max_height, tile_size, col, turret_type, money):
         if (mouse_pos[0] > max_width) or (mouse_pos[1] > max_height):
             print("해당 위치에 터렛을 설치할 수 없습니다.")
-            return
+            return False, 0
+
+        turret_data = self.turret_data_table[turret_type]
+        price = turret_data[turret_type]["purchase_price"]
+        if (money < price):
+            print("해당 터렛을 구매할 수 없습니다.")
+            return False, 0
 
         """해당 타일에 터렛 설치"""
         grid_x = mouse_pos[0] // tile_size
@@ -26,8 +32,7 @@ class TurretManager:
                 # 이미 설치된 곳은 설치하면 안됨.
                 if (grid_x, grid_y) == (turret.tile_x, turret.tile_y):
                     return
-            
-            turret_data = self.turret_data_table[turret_type]
+                        
             turret_idle_image = self.turret_image_table[turret_type]["idle"]
             turret_attack_images = self.turret_image_table[turret_type]["attack"]
             
@@ -40,6 +45,7 @@ class TurretManager:
             self.turrets.add(new_turret)
 
             print(f"터렛이 설치됨: ({grid_x}, {grid_y})") # 테스트용
+            return True, price
 
     def update(self, dt, enemies):
         for turret in self.turrets:
