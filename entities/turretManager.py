@@ -28,7 +28,7 @@ class TurretManager:
             turret_attack_images = self.turret_image_table[turret_type]["attack"]
             
             new_turret = Turret(grid_x, grid_y,
-                                CELL_SIZE,
+                                tile_size,
                                 turret_data,
                                 turret_idle_image,
                                 turret_attack_images)
@@ -111,7 +111,7 @@ if __name__ == "__main__":
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
-                turret_manager.create_turret(mouse_pos, CELL_SIZE, COLS, "cannon")
+                turret_manager.create_turret(mouse_pos, CELL_SIZE, COLS, "debugger")
             
         world.draw(screen)
 
