@@ -10,7 +10,13 @@ class World:
         """맵 데이터에서 원하는 정보 추출"""
         for layer in self.map_data["layers"]:
             if layer["name"] == "waypoints":
-                self.process_waypoints(layer["objects"])                
+                self.process_waypoints(layer["objects"])
+            elif layer["name"] == "round_map":
+                self.get_map_data(layer["data"])
+
+    def get_map_data(self, map_data):
+        """타일 맵 데이터 반환"""
+        return map_data
 
     def process_waypoints(self, object_data):
         """적들이 이동하는 좌표 리스트 추출"""
