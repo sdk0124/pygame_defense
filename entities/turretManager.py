@@ -15,7 +15,7 @@ class TurretManager:
             return False, 0
 
         turret_data = self.turret_data_table[turret_type]
-        price = turret_data[turret_type]["purchase_price"]
+        price = turret_data["purchase_price"]
         if (money < price):
             print("해당 터렛을 구매할 수 없습니다.")
             return False, 0
@@ -114,6 +114,8 @@ if __name__ == "__main__":
     map_width = ROWS * CELL_SIZE
     map_height = COLS * CELL_SIZE
 
+    player_money = 2000
+
     running = True
 
     while running:
@@ -124,8 +126,10 @@ if __name__ == "__main__":
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
-                turret_manager.create_turret(mouse_pos, map_width, map_height, CELL_SIZE, COLS, "debugger")
-            
+                success, cost = turret_manager.create_turret(mouse_pos, map_width, map_height, CELL_SIZE, COLS, "debugger", player_money)
+                if success:
+                    player_money -= cost
+
         world.draw(screen)
 
         enemy_manager.update(dt)
