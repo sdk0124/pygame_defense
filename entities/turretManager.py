@@ -9,7 +9,11 @@ class TurretManager:
         self.turret_image_table = turret_image_table
         self.turrets = pygame.sprite.Group()
 
-    def create_turret(self, mouse_pos, tile_size, col, turret_type):
+    def create_turret(self, mouse_pos, max_width, max_height, tile_size, col, turret_type):
+        if (mouse_pos[0] > max_width) or (mouse_pos[1] > max_height):
+            print("해당 위치에 터렛을 설치할 수 없습니다.")
+            return
+
         """해당 타일에 터렛 설치"""
         grid_x = mouse_pos[0] // tile_size
         grid_y = mouse_pos[1] // tile_size
@@ -48,7 +52,7 @@ class TurretManager:
 ### 테스트 코드 ###
 if __name__ == "__main__":
 
-    from core.settings import SCREEN_WIDTH, SCREEN_HEIGHT, FPS, CELL_SIZE, COLS
+    from core.settings import SCREEN_WIDTH, SCREEN_HEIGHT, FPS, CELL_SIZE, ROWS, COLS
     from resource_loader import load_enemy_images, load_map_data, load_map_image, load_turret_images
     
     from entities.enemyManager import EnemyManager
@@ -101,6 +105,9 @@ if __name__ == "__main__":
 
     turret_manager = TurretManager(tilemap, TURRET_DATA, turret_images)
 
+    map_width = ROWS * CELL_SIZE
+    map_height = COLS * CELL_SIZE
+
     running = True
 
     while running:
@@ -111,7 +118,7 @@ if __name__ == "__main__":
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
-                turret_manager.create_turret(mouse_pos, CELL_SIZE, COLS, "debugger")
+                turret_manager.create_turret(mouse_pos, map_width, map_height, CELL_SIZE, COLS, "debugger")
             
         world.draw(screen)
 
