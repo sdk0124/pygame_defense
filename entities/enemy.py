@@ -20,7 +20,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = self.position
 
-    def move(self, dt):
+    def move(self, dt, final_base):
         """waypoint에 맞춰서 적이 이동"""
         if self.target_waypoint_idx < len(self.waypoints):
             self.target = Vector2(self.waypoints[self.target_waypoint_idx])
@@ -28,6 +28,7 @@ class Enemy(pygame.sprite.Sprite):
         else:
             # 다 도달했으면 해당 적은 삭제되고 최종 방어 타워의 체력 1만큼 감소.
             print("collide with CPU!")
+            final_base.take_damage()
             self.kill()
 
         dist = self.movement.length()
@@ -71,6 +72,6 @@ class Enemy(pygame.sprite.Sprite):
         surface.blit(self.image, self.rect)
         self.drew_health_bar(surface)
 
-    def update(self, dt):
+    def update(self, dt, final_base):
         "적 상태 갱신"
-        self.move(dt)
+        self.move(dt, final_base)

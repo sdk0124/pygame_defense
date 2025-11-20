@@ -43,13 +43,13 @@ class EnemyManager:
             self.spawn_timer -= self.spawn_delay
             print(len(self.wave_queue)) # 확인용
 
-    def update(self, dt):
+    def update(self, dt, final_base):
         "모든 적 상태 갱신"
         self.spawn_timer += dt
         self.spwan_enemy()
     
         for enemy in self.enemies:
-            enemy.update(dt)
+            enemy.update(dt, final_base)
         
     def draw(self, surface):
         "모든 적 그리기"

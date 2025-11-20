@@ -53,3 +53,9 @@ def load_map_data():
         world_data = json.load(file)
 
     return world_data
+
+def load_final_base_image():
+    """최종 방어선 (CPU) 이미지 불러오기"""
+    final_base_image = pygame.image.load("assets/images/final_base/final_base.png").convert_alpha()
+
+    return final_base_image
