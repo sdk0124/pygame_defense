@@ -93,7 +93,7 @@ class Turret(pygame.sprite.Sprite):
 
     def _try_attack(self, dt):
         """공격 쿨다운"""
-        self.time_since_last_shot += dt
+        self.time_since_last_shot += (dt / 1000)
 
         attack_interval = 1.0 / self.fire_rate
 
@@ -117,7 +117,7 @@ class Turret(pygame.sprite.Sprite):
         """터렛의 상태에 따라 재생하는 이미지 설정"""
         # 1 : 공격 상태일 때
         if self.is_attack_anim_playing:
-            self.attack_anim_time += dt
+            self.attack_anim_time += (dt / 1000)
 
             frame_count = len(self.attack_base_images)
             if frame_count == 0:
