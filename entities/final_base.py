@@ -12,6 +12,9 @@ class FinalBase(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = self.position
 
+    def get_FinalBase_curHp(self):
+        return self.hp
+
     def get_isFinalBase_dead(self):
         return self.is_dead
 
@@ -80,7 +83,7 @@ if __name__ == "__main__":
     cur_wave_round = 3
     wave_data = WAVE_DATA
 
-    final_base = FinalBase((960, 830), FINAL_BASE_DATA["max_hp"], final_base_image)
+    final_base = FinalBase((920, 830), FINAL_BASE_DATA["max_hp"], final_base_image)
 
     enemy_manager = EnemyManager(world.get_waypoints(), ENEMY_DATA, enemy_images)
     enemy_manager.set_wave(cur_wave_round - 1, wave_data)
