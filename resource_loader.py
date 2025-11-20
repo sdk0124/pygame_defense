@@ -56,6 +56,6 @@ def load_map_data():
 
 def load_final_base_image():
     """최종 방어선 (CPU) 이미지 불러오기"""
-    final_base_image = pygame.image.load("assets/images/final_base/round_map.png").convert_alpha()
+    final_base_image = pygame.image.load("assets/images/final_base/final_base.png").convert_alpha()
 
     return final_base_image
