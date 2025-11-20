@@ -12,40 +12,44 @@ class TurretManager:
     def create_turret(self, mouse_pos, max_width, max_height, tile_size, col, turret_type, money):
         if (mouse_pos[0] > max_width) or (mouse_pos[1] > max_height):
             print("해당 위치에 터렛을 설치할 수 없습니다.")
-            return False, 0
+            return None
 
-        turret_data = self.turret_data_table[turret_type]
-        price = turret_data["purchase_price"]
-        if (money < price):
-            print("해당 터렛을 구매할 수 없습니다.")
-            return False, 0
-
-        """해당 타일에 터렛 설치"""
+        """해당 타일에 터렛 설치 시도"""
         grid_x = mouse_pos[0] // tile_size
         grid_y = mouse_pos[1] // tile_size
 
         mouse_tile_num = (grid_y * col) + grid_x
 
-        # 41 : 타일맵에서 길이 아닌 곳을 의미.
-        if self.world_tilemap[mouse_tile_num] == 41:
-            for turret in self.turrets:
-                # 이미 설치된 곳은 설치하면 안됨.
-                if (grid_x, grid_y) == (turret.tile_x, turret.tile_y):
-                    return
-                        
-            turret_idle_image = self.turret_image_table[turret_type]["idle"]
-            turret_attack_images = self.turret_image_table[turret_type]["attack"]
-            
-            new_turret = Turret(grid_x, grid_y,
-                                tile_size,
-                                turret_data,
-                                turret_idle_image,
-                                turret_attack_images)
-            
-            self.turrets.add(new_turret)
+        # 41 : 타일맵에서 터렛 설치가 가능한 공간을 의미.
+        if self.world_tilemap[mouse_tile_num] != 41:
+            print("터렛을 설치할 수 없는 구역입니다.")
+            return None
 
-            print(f"터렛이 설치됨: ({grid_x}, {grid_y})") # 테스트용
-            return True, price
+        for turret in self.turrets:
+            # 이미 설치된 곳은 설치하면 안됨.
+            if (grid_x, grid_y) == (turret.tile_x, turret.tile_y):
+                print("이미 터렛이 설치된 구역입니다.")
+                return None
+        
+        turret_data = self.turret_data_table[turret_type]
+        price = turret_data["purchase_price"]
+        if (money < price):
+            print("해당 터렛을 구매할 수 없습니다.")
+            return None
+
+        turret_idle_image = self.turret_image_table[turret_type]["idle"]
+        turret_attack_images = self.turret_image_table[turret_type]["attack"]
+        
+        new_turret = Turret(grid_x, grid_y,
+                            tile_size,
+                            turret_data,
+                            turret_idle_image,
+                            turret_attack_images)
+        
+        self.turrets.add(new_turret)
+
+        print(f"터렛이 설치됨: ({grid_x}, {grid_y})") # 테스트용
+        return {'isTurretPlaced' : True, 'price' : price}
 
     def update(self, dt, enemies):
         for turret in self.turrets:
@@ -126,9 +130,9 @@ if __name__ == "__main__":
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
-                success, cost = turret_manager.create_turret(mouse_pos, map_width, map_height, CELL_SIZE, COLS, "debugger", player_money)
-                if success:
-                    player_money -= cost
+                turretPlacedInfo = turret_manager.create_turret(mouse_pos, map_width, map_height, CELL_SIZE, COLS, "debugger", player_money)
+                if turretPlacedInfo:
+                    player_money -= turretPlacedInfo['price']
 
         world.draw(screen)
 
