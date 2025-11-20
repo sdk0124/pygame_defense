@@ -1,6 +1,8 @@
 import pygame
 import json
 
+from core.settings import TURRET_ANIM_STEPS
+
 def load_enemy_images():
     """적 이미지 불러오기"""
     enemy_images = {
@@ -11,17 +13,29 @@ def load_enemy_images():
 
     return enemy_images
 
+def split_spritesheet(spritesheet, frame_count):
+        size = spritesheet.get_height()
+        image_list = []
+
+        for x in range(frame_count):
+            temp_image = spritesheet.subsurface(x * size, 0, size, size)
+            image_list.append(temp_image)
+
+        return image_list
+
 def load_turret_images():
     """터렛 이미지 불러오기"""
     """idle 이미지 : 1장 / attack 이미지 : 여러 장이므로 주의"""
     turret_images = {
         "cannon" : {
             "idle" : pygame.image.load("assets/images/turrets/cannon.png").convert_alpha(),
-            "attack" : pygame.image.load("assets/images/turrets/cannon_attack.png").convert_alpha()
+            "attack" : split_spritesheet(pygame.image.load("assets/images/turrets/cannon_attack.png").convert_alpha(),
+                TURRET_ANIM_STEPS)
         },
         "debugger" : {
             "idle" : pygame.image.load("assets/images/turrets/core_debugger.png").convert_alpha(),
-            "attack" : pygame.image.load("assets/images/turrets/core_debugger_attack.png").convert_alpha()
+            "attack" : split_spritesheet(pygame.image.load("assets/images/turrets/core_debugger_attack.png").convert_alpha(),
+                TURRET_ANIM_STEPS)
         }
     }
 
