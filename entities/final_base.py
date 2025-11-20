@@ -32,7 +32,7 @@ class FinalBase(pygame.sprite.Sprite):
 ### 테스트 코드 ###
 if __name__ == "__main__":
 
-    from core.settings import SCREEN_WIDTH, SCREEN_HEIGHT, FPS, CELL_SIZE, ROWS, COLS
+    from core.settings import SCREEN_WIDTH, SCREEN_HEIGHT, FPS, CELL_SIZE, ROWS, COLS, FINAL_BASE_POS
     from resource_loader import load_enemy_images, load_map_data, load_map_image, load_turret_images, load_final_base_image
     
     from entities.enemyManager import EnemyManager
@@ -83,7 +83,7 @@ if __name__ == "__main__":
     cur_wave_round = 3
     wave_data = WAVE_DATA
 
-    final_base = FinalBase((920, 830), FINAL_BASE_DATA["max_hp"], final_base_image)
+    final_base = FinalBase(FINAL_BASE_POS, FINAL_BASE_DATA["max_hp"], final_base_image)
 
     enemy_manager = EnemyManager(world.get_waypoints(), ENEMY_DATA, enemy_images)
     enemy_manager.set_wave(cur_wave_round - 1, wave_data)

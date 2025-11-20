@@ -7,7 +7,7 @@ SCREEN_WIDTH = (ROWS * CELL_SIZE) + SIDE_WIDTH      # 화면 가로
 SCREEN_HEIGHT = (COLS * CELL_SIZE)                  # 화면 세로
 
 TURRET_ANIM_STEPS = 6
-
+FINAL_BASE_POS = (920, 830)
 FPS = 30
 
 FONT_PATH = "assets/fonts/NanumGothic-Bold.ttf"
