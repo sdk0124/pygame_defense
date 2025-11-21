@@ -31,7 +31,7 @@ class GameScene(Scene):
         self.world = World(load_map_data(), load_map_image())
         self.world.process_data()
 
-        self.enemy_manager = self.create_enemy_manager()
+        self.enemy_manager = self.create_enemy_manager(self.handle_enemy_death)
         self.turret_manager = self.create_turret_manager(self.world.get_map_data())
         
         self.final_base = self.create_final_base(FINAL_BASE_POS, FINAL_BASE_DATA["max_hp"])
@@ -39,11 +39,11 @@ class GameScene(Scene):
         # ui 준비
         self.prepare_uis()
 
-    def create_enemy_manager(self):
+    def create_enemy_manager(self, handle_enemy_death):
         """enemyManager 생성"""
         enemy_images = load_enemy_images()
         waypoints = self.world.get_waypoints()
-        return EnemyManager(waypoints, ENEMY_DATA, enemy_images)
+        return EnemyManager(waypoints, ENEMY_DATA, enemy_images, handle_enemy_death)
 
     def create_turret_manager(self, map_data):
         """TurretManager 생성"""
@@ -62,7 +62,14 @@ class GameScene(Scene):
         return self.turret_manager.create_turret(mouse_pos, map_width,
                                           map_height, CELL_SIZE,
                                           COLS, turret_type, self.money)
-        
+
+    def handle_enemy_death(self, enemy):
+        """적 사망 시 골드/스코어 처리"""
+        self.money += enemy.money
+        self.score += enemy.score
+        print(f"획득한 골드 : {enemy.money}, 획득 점수 : {enemy.score}")
+        print(f"총 골드 : {self.money}, 총 점수 : {self.score}")
+
     # 버튼 눌리면 호출할 함수
     def start_wave(self):
         """
