@@ -23,7 +23,7 @@ class GameScene(Scene):
     def __init__(self, game):
         super().__init__(game)
         self.score = 0
-        self.money = 0
+        self.money = 1000 # 임시
         self.current_round = 1
         self.wave_active = False
         self.wave_data = WAVE_DATA
