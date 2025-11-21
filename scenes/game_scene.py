@@ -6,7 +6,7 @@ from entities.world import World
 from entities.enemyManager import EnemyManager
 from entities.turretManager import TurretManager
 from entities.final_base import FinalBase
-from core.settings import FINAL_BASE_POS
+from core.settings import FINAL_BASE_POS, ROWS, COLS, CELL_SIZE
 
 from data.turret_data import TURRET_DATA
 from data.enemy_data import ENEMY_DATA
@@ -55,6 +55,14 @@ class GameScene(Scene):
         final_base_image = load_final_base_image()
         return FinalBase(position, max_hp, final_base_image)
 
+    def try_place_turret(self, mouse_pos, turret_type):
+        """터렛 설치 시도"""
+        map_width = ROWS * CELL_SIZE
+        map_height = COLS * CELL_SIZE
+        return self.turret_manager.create_turret(mouse_pos, map_width,
+                                          map_height, CELL_SIZE,
+                                          COLS, turret_type, self.money)
+        
     # 버튼 눌리면 호출할 함수
     def start_wave(self):
         """
@@ -100,6 +108,14 @@ class GameScene(Scene):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.game.running = False
+
+            """ 임시 이벤트 """
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                mouse_pos = pygame.mouse.get_pos()
+                turretPlacedInfo = self.try_place_turret(mouse_pos, "debugger")
+                if turretPlacedInfo:
+                    self.money -= turretPlacedInfo['price']
+            """ 임시 이벤트 끝 """
 
             # ui 이벤트 처리
             self.uis.handle_events(event)
