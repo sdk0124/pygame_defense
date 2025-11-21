@@ -106,7 +106,7 @@ class GameScene(Scene):
 
     def update(self, dt):
         if self.wave_active:
-            self.enemy_manager.update(dt)
+            self.enemy_manager.update(dt, self.final_base)
 
             if self.enemy_manager.is_wave_done():
                 self.wave_active = False
