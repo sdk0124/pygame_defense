@@ -3,7 +3,7 @@ from collections import deque
 from entities.enemy import Enemy
 
 class EnemyManager:
-    def __init__(self, waypoints, enemy_data_table, enemy_image_table, on_enemy_death):
+    def __init__(self, waypoints, enemy_data_table, enemy_image_table, on_enemy_death=None):
         self.waypoints = waypoints
         self.enemy_data_table = enemy_data_table
         self.image_table = enemy_image_table
@@ -38,7 +38,12 @@ class EnemyManager:
         while self.spawn_timer >= self.spawn_delay and len(self.wave_queue) != 0:
             enemy_type = self.wave_queue.popleft()
             enemy_data = self.enemy_data_table[enemy_type]
-            new_enemy = Enemy(enemy_data, self.waypoints, self.image_table[enemy_type])
+
+            new_enemy = Enemy(enemy_data, 
+                              self.waypoints, 
+                              self.image_table[enemy_type], 
+                              on_death=self.on_enemy_death)
+            
             self.enemies.add(new_enemy)
 
             self.spawn_timer -= self.spawn_delay
