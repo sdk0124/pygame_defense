@@ -1,14 +1,17 @@
 # scenes/game_scene.py
 import pygame
 
-from resource_loader import load_map_image, load_map_data, load_enemy_images, load_turret_images
+from resource_loader import load_map_image, load_map_data, load_enemy_images, load_turret_images, load_final_base_image
 from entities.world import World
 from entities.enemyManager import EnemyManager
 from entities.turretManager import TurretManager
+from entities.final_base import FinalBase
+from core.settings import FINAL_BASE_POS
 
 from data.turret_data import TURRET_DATA
 from data.enemy_data import ENEMY_DATA
 from data.wave_data import WAVE_DATA
+from data.final_base_data import FINAL_BASE_DATA
 
 from ui.ui_manager import UIManager
 from ui.image_button import ImageButton
@@ -30,7 +33,8 @@ class GameScene(Scene):
 
         self.enemy_manager = self.create_enemy_manager()
         self.turret_manager = self.create_turret_manager(self.world.get_map_data())
-
+        
+        self.final_base = self.create_final_base(FINAL_BASE_POS, FINAL_BASE_DATA["max_hp"])
 
         # ui 준비
         self.prepare_uis()
@@ -45,6 +49,11 @@ class GameScene(Scene):
         """TurretManager 생성"""
         turret_images = load_turret_images()
         return TurretManager(map_data, TURRET_DATA, turret_images)
+
+    def create_final_base(self, position, max_hp):
+        """Final Base 생성"""
+        final_base_image = load_final_base_image()
+        return FinalBase(position, max_hp, final_base_image)
 
     # 버튼 눌리면 호출할 함수
     def start_wave(self):
@@ -112,6 +121,7 @@ class GameScene(Scene):
             self.enemy_manager.draw(screen)
 
         self.turret_manager.draw(screen)
+        self.final_base.draw(screen)
 
         # ui 그리기
         self.uis.draw(screen)
