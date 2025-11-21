@@ -4,7 +4,9 @@ import pygame
 from resource_loader import load_map_image, load_map_data, load_enemy_images, load_turret_images
 from entities.world import World
 from entities.enemyManager import EnemyManager
+from entities.turretManager import TurretManager
 
+from data.turret_data import TURRET_DATA
 from data.enemy_data import ENEMY_DATA
 from data.wave_data import WAVE_DATA
 
@@ -27,6 +29,8 @@ class GameScene(Scene):
         self.world.process_data()
 
         self.enemy_manager = self.create_enemy_manager()
+        self.turret_manager = self.create_turret_manager(self.world.get_map_data())
+
 
         # ui 준비
         self.prepare_uis()
@@ -36,6 +40,11 @@ class GameScene(Scene):
         enemy_images = load_enemy_images()
         waypoints = self.world.get_waypoints()
         return EnemyManager(waypoints, ENEMY_DATA, enemy_images)
+
+    def create_turret_manager(self, map_data):
+        """TurretManager 생성"""
+        turret_images = load_turret_images()
+        return TurretManager(map_data, TURRET_DATA, turret_images)
 
     # 버튼 눌리면 호출할 함수
     def start_wave(self):
@@ -93,12 +102,16 @@ class GameScene(Scene):
             if self.enemy_manager.is_wave_done():
                 self.wave_active = False
                 print("웨이브 종료") # 확인용
+        
+        self.turret_manager.update(dt)
 
     def draw(self, screen):
         self.world.draw(screen)
 
         if self.wave_active:
             self.enemy_manager.draw(screen)
+
+        self.turret_manager.draw(screen)
 
         # ui 그리기
         self.uis.draw(screen)
