@@ -31,7 +31,7 @@ class GameScene(Scene):
         self.world = World(load_map_data(), load_map_image())
         self.world.process_data()
 
-        self.enemy_manager = self.create_enemy_manager()
+        self.enemy_manager = self.create_enemy_manager(self.handle_enemy_death)
         self.turret_manager = self.create_turret_manager(self.world.get_map_data())
         
         self.final_base = self.create_final_base(FINAL_BASE_POS, FINAL_BASE_DATA["max_hp"])
@@ -39,11 +39,11 @@ class GameScene(Scene):
         # ui 준비
         self.prepare_uis()
 
-    def create_enemy_manager(self):
+    def create_enemy_manager(self, handle_enemy_death):
         """enemyManager 생성"""
         enemy_images = load_enemy_images()
         waypoints = self.world.get_waypoints()
-        return EnemyManager(waypoints, ENEMY_DATA, enemy_images)
+        return EnemyManager(waypoints, ENEMY_DATA, enemy_images, handle_enemy_death)
 
     def create_turret_manager(self, map_data):
         """TurretManager 생성"""
