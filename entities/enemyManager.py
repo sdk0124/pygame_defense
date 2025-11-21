@@ -3,11 +3,12 @@ from collections import deque
 from entities.enemy import Enemy
 
 class EnemyManager:
-    def __init__(self, waypoints, enemy_data_table, enemy_image_table):
+    def __init__(self, waypoints, enemy_data_table, enemy_image_table, on_enemy_death):
         self.waypoints = waypoints
         self.enemy_data_table = enemy_data_table
         self.image_table = enemy_image_table
         self.enemies = pygame.sprite.Group()
+        self.on_enemy_death = on_enemy_death
 
         self.wave_queue = deque()
 
