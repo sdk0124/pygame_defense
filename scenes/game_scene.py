@@ -112,7 +112,7 @@ class GameScene(Scene):
                 self.wave_active = False
                 print("웨이브 종료") # 확인용
         
-        self.turret_manager.update(dt)
+        self.turret_manager.update(dt, self.enemy_manager.enemies)
 
     def draw(self, screen):
         self.world.draw(screen)
