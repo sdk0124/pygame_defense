@@ -2,7 +2,7 @@ import pygame
 from pygame.math import Vector2
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, enemy_data, waypoints, image):
+    def __init__(self, enemy_data, waypoints, image, on_death=None):
         super().__init__()
         self.waypoints = waypoints
         self.target_waypoint_idx = 1
@@ -15,6 +15,7 @@ class Enemy(pygame.sprite.Sprite):
         self.money = data["money"]
         self.score = data["score"]
         self.is_dead = False
+        self.on_death = on_death
 
         self.image = image
         self.rect = self.image.get_rect()
@@ -51,9 +52,11 @@ class Enemy(pygame.sprite.Sprite):
         if self.hp <= 0 and not self.is_dead:
             self.is_dead = True
             print("적 처치") # 테스트용
+
+            if self.on_death is not None:
+                self.on_death(self)
+            
             self.kill()
-            return {'money' : self.money, 'score' : self.score}
-        return None
 
     def drew_health_bar(self, surface):
         """적 HP 바 그리기"""
