@@ -8,11 +8,39 @@ WAVE_DATA = [
         "spawn_delay" : 1000
     },
     {
-        "enemies" : {"byter" : 10},
+        "enemies" : {"byter" : 7},
         "spawn_delay" : 1000
     },
     {
-        "enemies" : {"byter" : 5, "worm" : 5},
+        "enemies" : {"byter" : 9, "worm" : 1},
         "spawn_delay" : 1000
-    }
+    },
+    {
+        "enemies" : {"byter" : 8, "worm" : 3},
+        "spawn_delay" : 1000
+    },
+    {
+        "enemies" : {"byter" : 6, "worm" : 5},
+        "spawn_delay" : 1000
+    },
+    {
+        "enemies" : {"byter" : 5, "worm" : 7},
+        "spawn_delay" : 1000
+    },
+    {
+        "enemies" : {"byter" : 4, "worm" : 9},
+        "spawn_delay" : 1000
+    },
+    {
+        "enemies" : {"byter" : 4, "worm" : 12},
+        "spawn_delay" : 1000
+    },
+    {
+        "enemies" : {"byter" : 3, "worm" : 15},
+        "spawn_delay" : 1000
+    },
+    {
+        "enemies" : {"boss" : 1},
+        "spawn_delay" : 1000
+    },
 ]
