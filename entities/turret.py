@@ -168,6 +168,12 @@ class Turret(pygame.sprite.Sprite):
         self.image = rotated_image
         self.rect = self.image.get_rect(center=old_center)
 
+    def get_isSelected(self):
+        return self.is_selected
+
+    def set_isSelected(self, value):
+        self.is_selected = value
+
     def update(self, dt, enemies):
         self._update_target(enemies)
 

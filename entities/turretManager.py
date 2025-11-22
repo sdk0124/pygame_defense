@@ -63,13 +63,14 @@ class TurretManager:
         """터렛 선택 상태 결정"""
         self.selected_turret = turret
         for existing_turret in self.turrets:
-            existing_turret.is_selected = (existing_turret is turret)
+            value = (existing_turret is turret)
+            existing_turret.set_isSelected(value)
 
     def clear_selection(self):
         """선택된 터렛 해제"""
         self.selected_turret = None
         for turret in self.turrets:
-            turret.is_selected = False
+            turret.set_isSelected(False)
 
     def update(self, dt, enemies):
         for turret in self.turrets:
