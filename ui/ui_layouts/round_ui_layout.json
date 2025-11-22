@@ -1,17 +1,17 @@
 {
     "objects": [
         {
+            "layer": 0,
             "type": "label",
-            "x": 981,
-            "y": 420,
-            "text": "\uce90\ub17c",
+            "x": 891,
+            "y": 7,
+            "text": "0",
             "color": [
                 255,
                 255,
                 255
             ],
-            "font_size": 40,
-            "layer": 0
+            "font_size": 40
         }
     ]
 }

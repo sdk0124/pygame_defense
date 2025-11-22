@@ -1,17 +1,17 @@
 {
     "objects": [
         {
+            "layer": 0,
             "type": "label",
-            "x": 981,
-            "y": 420,
+            "x": 558,
+            "y": 263,
             "text": "0",
             "color": [
                 255,
                 255,
                 255
             ],
-            "font_size": 40,
-            "layer": 0
+            "font_size": 76
         }
     ]
 }
