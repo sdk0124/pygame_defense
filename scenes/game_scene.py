@@ -124,6 +124,16 @@ class GameScene(Scene):
                     self.money -= turretPlacedInfo['price']
             """ 임시 이벤트 끝 """
 
+            # 임시로 마우스 오른쪽 클릭 시 발동
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
+                mouse_pos = pygame.mouse.get_pos()
+                clicked_turret = self.turret_manager.get_turret_at_position(mouse_pos)
+
+                if (clicked_turret == None) or (clicked_turret.get_isSelected()):
+                    self.turret_manager.clear_selection()
+                else:
+                    self.turret_manager.set_selected_turret(clicked_turret)
+
             # ui 이벤트 처리
             self.uis.handle_events(event)
 
