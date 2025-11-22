@@ -8,6 +8,7 @@ class TurretManager:
         self.turret_data_table = turret_data_table
         self.turret_image_table = turret_image_table
         self.turrets = pygame.sprite.Group()
+        self.selected_turret = None
 
     def create_turret(self, mouse_pos, max_width, max_height, tile_size, col, turret_type, money):
         if (mouse_pos[0] > max_width) or (mouse_pos[1] > max_height):
@@ -50,6 +51,26 @@ class TurretManager:
 
         print(f"터렛이 설치됨: ({grid_x}, {grid_y})") # 테스트용
         return {'isTurretPlaced' : True, 'price' : price}
+
+    def get_turret_at_position(self, mouse_pos):
+        """현재 좌표에 존재하는 터렛 반환, 없으면 None"""
+        for turret in self.turrets:
+            if turret.rect.collidepoint(mouse_pos):
+                return turret
+        return None
+
+    def set_selected_turret(self, turret):
+        """터렛 선택 상태 결정"""
+        self.selected_turret = turret
+        for existing_turret in self.turrets:
+            value = (existing_turret is turret)
+            existing_turret.set_isSelected(value)
+
+    def clear_selection(self):
+        """선택된 터렛 해제"""
+        self.selected_turret = None
+        for turret in self.turrets:
+            turret.set_isSelected(False)
 
     def update(self, dt, enemies):
         for turret in self.turrets:

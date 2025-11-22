@@ -39,6 +39,8 @@ class Turret(pygame.sprite.Sprite):
 
         self.time_since_last_shot = 0.0   # 마지막으로 공격한 시각
 
+        self.is_selected = False    # 해당 터렛 선택 여부
+
     def draw_range(self, surface):
         """터렛 범위를 원 모양으로 그리기"""
         range_surf = pygame.Surface((self.range * 2, self.range * 2), pygame.SRCALPHA)
@@ -166,6 +168,12 @@ class Turret(pygame.sprite.Sprite):
         self.image = rotated_image
         self.rect = self.image.get_rect(center=old_center)
 
+    def get_isSelected(self):
+        return self.is_selected
+
+    def set_isSelected(self, value):
+        self.is_selected = value
+
     def update(self, dt, enemies):
         self._update_target(enemies)
 
@@ -181,7 +189,8 @@ class Turret(pygame.sprite.Sprite):
 
     def draw(self, surface):
         """터렛 그리기"""
-        self.draw_range(surface)
+        if self.is_selected: # 해당 터렛 선택 상태면 범위 그리기
+            self.draw_range(surface)
         surface.blit(self.image, self.rect)
 
 ### 테스트 코드 ###
