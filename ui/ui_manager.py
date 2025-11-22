@@ -73,7 +73,6 @@ class UIManager:
                     obj.get("font_size", 24),
                     tuple(obj.get("text_color", (255,255,255))),
                     tuple(obj.get("color_idle", (60,60,60))),
-                    tuple(obj.get("color_hover", (90,90,90))),
                     None,  # action은 나중에 연결
                     obj.get("layer", 0)
                 )

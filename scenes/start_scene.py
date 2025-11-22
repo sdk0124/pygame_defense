@@ -21,8 +21,6 @@ class StartScene(Scene):
 
     # ui manager 생성
     def prepare_uis(self) -> UIManager:
-        # start_button = ImageButton(300, 400, 200, 60, None, "START", action=self.game_start)
-        # title = Label(220, 200, 0, "CPU DEFENSE", 80)
         uis = UIManager()
         uis.load_uis(UI_PATH_START_SCENE, {"game_start": self.game_start})
 
