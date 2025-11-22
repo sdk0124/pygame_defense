@@ -2,7 +2,7 @@ import pygame
 from pygame.math import Vector2
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, enemy_data, waypoints, image):
+    def __init__(self, enemy_data, waypoints, image, on_death=None):
         super().__init__()
         self.waypoints = waypoints
         self.target_waypoint_idx = 1
@@ -14,12 +14,14 @@ class Enemy(pygame.sprite.Sprite):
         self.speed = data["speed"]
         self.money = data["money"]
         self.score = data["score"]
+        self.is_dead = False
+        self.on_death = on_death
 
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.center = self.position
 
-    def move(self, dt):
+    def move(self, dt, final_base):
         """waypoint에 맞춰서 적이 이동"""
         if self.target_waypoint_idx < len(self.waypoints):
             self.target = Vector2(self.waypoints[self.target_waypoint_idx])
@@ -27,6 +29,7 @@ class Enemy(pygame.sprite.Sprite):
         else:
             # 다 도달했으면 해당 적은 삭제되고 최종 방어 타워의 체력 1만큼 감소.
             print("collide with CPU!")
+            final_base.take_damage()
             self.kill()
 
         dist = self.movement.length()
@@ -40,6 +43,20 @@ class Enemy(pygame.sprite.Sprite):
             self.target_waypoint_idx += 1
         
         self.rect.center = self.position
+
+    def take_damage(self, damage):
+        """적 피격"""
+        self.hp -= damage
+
+        # 적 사망 시 돈과 점수를 반환
+        if self.hp <= 0 and not self.is_dead:
+            self.is_dead = True
+            print("적 처치") # 테스트용
+
+            if self.on_death is not None:
+                self.on_death(self)
+            
+            self.kill()
 
     def drew_health_bar(self, surface):
         """적 HP 바 그리기"""
@@ -58,6 +75,6 @@ class Enemy(pygame.sprite.Sprite):
         surface.blit(self.image, self.rect)
         self.drew_health_bar(surface)
 
-    def update(self, dt):
+    def update(self, dt, final_base):
         "적 상태 갱신"
-        self.move(dt)
+        self.move(dt, final_base)

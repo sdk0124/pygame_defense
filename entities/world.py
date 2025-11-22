@@ -5,12 +5,22 @@ class World:
         self.map_data = map_data
         self.map_image = map_image
         self.waypoints = []
+        self.tile_map_data = None
 
     def process_data(self):
         """맵 데이터에서 원하는 정보 추출"""
         for layer in self.map_data["layers"]:
             if layer["name"] == "waypoints":
-                self.process_waypoints(layer["objects"])                
+                self.process_waypoints(layer["objects"])
+            if layer["name"] == "round_map":
+                self.set_tile_map_data(layer["data"])
+
+    def set_tile_map_data(self, tile_map_data):
+        self.tile_map_data = tile_map_data
+
+    def get_map_data(self):
+        """타일 맵 데이터 반환"""
+        return self.tile_map_data
 
     def process_waypoints(self, object_data):
         """적들이 이동하는 좌표 리스트 추출"""

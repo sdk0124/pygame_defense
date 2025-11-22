@@ -1,12 +1,17 @@
 # scenes/game_scene.py
 import pygame
 
-from resource_loader import load_map_image, load_map_data, load_enemy_images, load_turret_images
+from resource_loader import load_map_image, load_map_data, load_enemy_images, load_turret_images, load_final_base_image
 from entities.world import World
 from entities.enemyManager import EnemyManager
+from entities.turretManager import TurretManager
+from entities.final_base import FinalBase
+from core.settings import FINAL_BASE_POS, ROWS, COLS, CELL_SIZE
 
+from data.turret_data import TURRET_DATA
 from data.enemy_data import ENEMY_DATA
 from data.wave_data import WAVE_DATA
+from data.final_base_data import FINAL_BASE_DATA
 
 from ui.ui_manager import UIManager
 from ui.image_button import ImageButton
@@ -23,22 +28,53 @@ class GameScene(Scene):
             "score": 0,
             "current_round": 1
         }
+        self.score = 0
+        self.money = 1000 # 임시
+        self.current_round = 1
         self.wave_active = False
         self.wave_data = WAVE_DATA
 
         self.world = World(load_map_data(), load_map_image())
         self.world.process_data()
 
-        self.enemy_manager = self.create_enemy_manager()
+        self.enemy_manager = self.create_enemy_manager(self.handle_enemy_death)
+        self.turret_manager = self.create_turret_manager(self.world.get_map_data())
+        
+        self.final_base = self.create_final_base(FINAL_BASE_POS, FINAL_BASE_DATA["max_hp"])
 
         # ui 준비
         self.prepare_uis()
 
-    def create_enemy_manager(self):
+    def create_enemy_manager(self, handle_enemy_death):
         """enemyManager 생성"""
         enemy_images = load_enemy_images()
         waypoints = self.world.get_waypoints()
-        return EnemyManager(waypoints, ENEMY_DATA, enemy_images)
+        return EnemyManager(waypoints, ENEMY_DATA, enemy_images, handle_enemy_death)
+
+    def create_turret_manager(self, map_data):
+        """TurretManager 생성"""
+        turret_images = load_turret_images()
+        return TurretManager(map_data, TURRET_DATA, turret_images)
+
+    def create_final_base(self, position, max_hp):
+        """Final Base 생성"""
+        final_base_image = load_final_base_image()
+        return FinalBase(position, max_hp, final_base_image)
+
+    def try_place_turret(self, mouse_pos, turret_type):
+        """터렛 설치 시도"""
+        map_width = ROWS * CELL_SIZE
+        map_height = COLS * CELL_SIZE
+        return self.turret_manager.create_turret(mouse_pos, map_width,
+                                          map_height, CELL_SIZE,
+                                          COLS, turret_type, self.money)
+
+    def handle_enemy_death(self, enemy):
+        """적 사망 시 골드/스코어 처리"""
+        self.money += enemy.money
+        self.score += enemy.score
+        print(f"획득한 골드 : {enemy.money}, 획득 점수 : {enemy.score}")
+        print(f"총 골드 : {self.money}, 총 점수 : {self.score}")
 
     # 버튼 눌리면 호출할 함수
     def start_wave(self):
@@ -98,16 +134,36 @@ class GameScene(Scene):
             if event.type == pygame.QUIT:
                 self.game.running = False
 
+            """ 임시 이벤트 """
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                mouse_pos = pygame.mouse.get_pos()
+                turretPlacedInfo = self.try_place_turret(mouse_pos, "debugger")
+                if turretPlacedInfo:
+                    self.money -= turretPlacedInfo['price']
+            """ 임시 이벤트 끝 """
+
+            # 임시로 마우스 오른쪽 클릭 시 발동
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
+                mouse_pos = pygame.mouse.get_pos()
+                clicked_turret = self.turret_manager.get_turret_at_position(mouse_pos)
+
+                if (clicked_turret == None) or (clicked_turret.get_isSelected()):
+                    self.turret_manager.clear_selection()
+                else:
+                    self.turret_manager.set_selected_turret(clicked_turret)
+
             # ui 이벤트 처리
             self.uis.handle_events(event)
 
     def update(self, dt):
         if self.wave_active:
-            self.enemy_manager.update(dt)
+            self.enemy_manager.update(dt, self.final_base)
 
             if self.enemy_manager.is_wave_done():
                 self.wave_active = False
                 print("웨이브 종료") # 확인용
+        
+        self.turret_manager.update(dt, self.enemy_manager.enemies)
 
         # 텍스트 ui 업데이트
         for key in self.variable_uis.keys():
@@ -118,6 +174,9 @@ class GameScene(Scene):
 
         if self.wave_active:
             self.enemy_manager.draw(screen)
+
+        self.turret_manager.draw(screen)
+        self.final_base.draw(screen)
 
         # ui 그리기
         self.uis.draw(screen)

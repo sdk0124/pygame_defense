@@ -3,11 +3,12 @@ from collections import deque
 from entities.enemy import Enemy
 
 class EnemyManager:
-    def __init__(self, waypoints, enemy_data_table, enemy_image_table):
+    def __init__(self, waypoints, enemy_data_table, enemy_image_table, on_enemy_death=None):
         self.waypoints = waypoints
         self.enemy_data_table = enemy_data_table
         self.image_table = enemy_image_table
         self.enemies = pygame.sprite.Group()
+        self.on_enemy_death = on_enemy_death
 
         self.wave_queue = deque()
 
@@ -37,19 +38,24 @@ class EnemyManager:
         while self.spawn_timer >= self.spawn_delay and len(self.wave_queue) != 0:
             enemy_type = self.wave_queue.popleft()
             enemy_data = self.enemy_data_table[enemy_type]
-            new_enemy = Enemy(enemy_data, self.waypoints, self.image_table[enemy_type])
+
+            new_enemy = Enemy(enemy_data, 
+                              self.waypoints, 
+                              self.image_table[enemy_type], 
+                              on_death=self.on_enemy_death)
+            
             self.enemies.add(new_enemy)
 
             self.spawn_timer -= self.spawn_delay
             print(len(self.wave_queue)) # 확인용
 
-    def update(self, dt):
+    def update(self, dt, final_base):
         "모든 적 상태 갱신"
         self.spawn_timer += dt
         self.spwan_enemy()
     
         for enemy in self.enemies:
-            enemy.update(dt)
+            enemy.update(dt, final_base)
         
     def draw(self, surface):
         "모든 적 그리기"
