@@ -154,21 +154,25 @@ class GameScene(Scene):
             if event.type == pygame.QUIT:
                 self.game.running = False
 
-            """ 임시 이벤트 """
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
                 if self.selected_turret_type:
                     turretPlacedInfo = self.try_place_turret(mouse_pos, self.selected_turret_type)
                     if turretPlacedInfo:
                         self.info["money"] -= turretPlacedInfo['price']
+                        
                     # 돈 부족하면 현재 선택된 터렛 이미지 없애기
                     if not self.turret_manager.get_isTurret_purchasable(self.selected_turret_type, self.info["money"]):
                         self.selected_turret_uis = None
                         self.selected_turret_type = None
-            """ 임시 이벤트 끝 """
 
             # 임시로 마우스 오른쪽 클릭 시 발동
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
+                if self.selected_turret_type:
+                    self.selected_turret_uis = None
+                    self.selected_turret_type = None
+                    continue
+
                 mouse_pos = pygame.mouse.get_pos()
                 clicked_turret = self.turret_manager.get_turret_at_position(mouse_pos)
 
