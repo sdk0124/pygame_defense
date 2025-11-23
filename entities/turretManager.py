@@ -34,9 +34,6 @@ class TurretManager:
         
         turret_data = self.turret_data_table[turret_type]
         price = turret_data["purchase_price"]
-        if (money < price):
-            print("해당 터렛을 구매할 수 없습니다.")
-            return None
 
         turret_idle_image = self.turret_image_table[turret_type]["idle"]
         turret_attack_images = self.turret_image_table[turret_type]["attack"]

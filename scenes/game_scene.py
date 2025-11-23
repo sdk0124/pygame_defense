@@ -6,7 +6,7 @@ from entities.world import World
 from entities.enemyManager import EnemyManager
 from entities.turretManager import TurretManager
 from entities.final_base import FinalBase
-from core.settings import FINAL_BASE_POS, ROWS, COLS, CELL_SIZE
+from core.settings import FINAL_BASE_POS, ROWS, COLS, CELL_SIZE, START_MONEY
 
 from data.turret_data import TURRET_DATA
 from data.enemy_data import ENEMY_DATA
@@ -36,11 +36,15 @@ class GameScene(Scene):
         self.final_base = self.create_final_base(FINAL_BASE_POS, FINAL_BASE_DATA["max_hp"])
 
         self.info = {
-            "money": 1000,
+            "money": START_MONEY,
             "hp": self.final_base.get_FinalBase_curHp(),
             "score": 0,
             "current_round": 1
         }
+
+        # 터렛 구매 모드인지 아닌 지
+        self.is_turretPurchaseMode = False
+
         # ui 준비
         self.prepare_uis()
 
@@ -73,7 +77,7 @@ class GameScene(Scene):
         self.info["money"] += enemy.money
         self.info["score"] += enemy.score
         print(f"획득한 골드 : {enemy.money}, 획득 점수 : {enemy.score}")
-        print(f"총 골드 : {self.info["money"]}, 총 점수 : {self.info["score"]}")
+        print(f'총 골드 : {self.info["money"]}, 총 점수 : {self.info["score"]}')
 
     # 버튼 눌리면 호출할 함수
     def start_wave(self):
@@ -91,27 +95,35 @@ class GameScene(Scene):
         from scenes.end_scene import GameOverScene
         self.switch_to(GameOverScene(self.game, self.info["score"]))
     
-    # 터렛 선택
+    # 터렛 선택 (캐논 터렛 구매 모드)
     def select_turret_cannon(self):
         self.selected_turret_info_uis = self.cannon_info_uis
         if self.selected_turret_uis != self.selected_turret_uis_cannon:
             self.selected_turret_uis = None
             self.selected_turret_type = None
+
         if self.turret_manager.get_isTurret_purchasable("cannon", self.info["money"]):
             print("c")
             self.selected_turret_uis = self.selected_turret_uis_cannon
             self.selected_turret_type = "cannon"
+            self.is_turretPurchaseMode = True
+        else:
+            self.is_turretPurchaseMode = False
 
-    # 터렛 선택
+    # 터렛 선택 (디버거 터렛 구매 모드)
     def select_turret_core_debugger(self):
         self.selected_turret_info_uis = self.core_debugger_info_uis
         if self.selected_turret_uis != self.selected_turret_uis_debugger:
             self.selected_turret_uis = None
             self.selected_turret_type = None
+
         if self.turret_manager.get_isTurret_purchasable("debugger", self.info["money"]):
             print("d")
             self.selected_turret_uis = self.selected_turret_uis_debugger
             self.selected_turret_type = "debugger"
+            self.is_turretPurchaseMode = True
+        else:
+            self.is_turretPurchaseMode = False
 
     # ui manager 생성
     def prepare_uis(self) -> UIManager:
@@ -156,7 +168,10 @@ class GameScene(Scene):
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
-                if self.selected_turret_type:
+
+                # 터렛 구매 모드일 경우
+                if self.is_turretPurchaseMode:
+                    # 터렛 구매
                     turretPlacedInfo = self.try_place_turret(mouse_pos, self.selected_turret_type)
                     if turretPlacedInfo:
                         self.info["money"] -= turretPlacedInfo['price']
@@ -165,21 +180,24 @@ class GameScene(Scene):
                     if not self.turret_manager.get_isTurret_purchasable(self.selected_turret_type, self.info["money"]):
                         self.selected_turret_uis = None
                         self.selected_turret_type = None
+                        self.is_turretPurchaseMode = False
+                
+                # 터렛 구매 모드가 아닐 경우
+                else:
+                    clicked_turret = self.turret_manager.get_turret_at_position(mouse_pos)
 
-            # 임시로 마우스 오른쪽 클릭 시 발동
+                    if (clicked_turret == None) or (clicked_turret.get_isSelected()):
+                        self.turret_manager.clear_selection()
+                    else:
+                        self.turret_manager.set_selected_turret(clicked_turret)
+
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
-                if self.selected_turret_type:
+
+                # 현재 터렛 구매 모드에서 마우스 우클릭 시 터렛 구매 모드 해제
+                if self.is_turretPurchaseMode:
                     self.selected_turret_uis = None
                     self.selected_turret_type = None
-                    continue
-
-                mouse_pos = pygame.mouse.get_pos()
-                clicked_turret = self.turret_manager.get_turret_at_position(mouse_pos)
-
-                if (clicked_turret == None) or (clicked_turret.get_isSelected()):
-                    self.turret_manager.clear_selection()
-                else:
-                    self.turret_manager.set_selected_turret(clicked_turret)
+                    self.is_turretPurchaseMode = False
 
             # ui 이벤트 처리
             self.uis.handle_events(event)
@@ -227,5 +245,6 @@ class GameScene(Scene):
         # 골드, 라운드, 점수 등
         for ui in self.variable_uis.values():
             ui.draw(screen)
-        if self.selected_turret_uis:
+
+        if self.is_turretPurchaseMode and self.selected_turret_uis:
             self.selected_turret_uis.draw(screen)

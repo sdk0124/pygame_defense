@@ -10,6 +10,8 @@ TURRET_ANIM_STEPS = 6
 FINAL_BASE_POS = (920, 830)
 FPS = 30
 
+START_MONEY = 300   # 시작 시 플레이어에게 주어진 초기 돈
+
 FONT_PATH = "assets/fonts/NanumGothic-Bold.ttf"
 INFO_UI_PATH_CANNON = "ui/ui_layouts/cannon_info_ui_layout.json"
 INFO_UI_PATH_CORE_DEBUGGER = "ui/ui_layouts/core_debugger_info_ui_layout.json"
