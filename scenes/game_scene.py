@@ -77,7 +77,7 @@ class GameScene(Scene):
         self.info["money"] += enemy.money
         self.info["score"] += enemy.score
         print(f"획득한 골드 : {enemy.money}, 획득 점수 : {enemy.score}")
-        print(f"총 골드 : {self.info["money"]}, 총 점수 : {self.info["score"]}")
+        print(f'총 골드 : {self.info["money"]}, 총 점수 : {self.info["score"]}')
 
     # 버튼 눌리면 호출할 함수
     def start_wave(self):
@@ -246,5 +246,5 @@ class GameScene(Scene):
         for ui in self.variable_uis.values():
             ui.draw(screen)
 
-        if self.is_turretPurchaseMode:
+        if self.is_turretPurchaseMode and self.selected_turret_uis:
             self.selected_turret_uis.draw(screen)
