@@ -52,6 +52,11 @@ class TurretManager:
         print(f"터렛이 설치됨: ({grid_x}, {grid_y})") # 테스트용
         return {'isTurretPlaced' : True, 'price' : price}
 
+    def get_isTurret_purchasable(self, turret_type, money):
+        turret_data = self.turret_data_table[turret_type]
+        price = turret_data["purchase_price"]
+        return money >= price
+
     def get_turret_at_position(self, mouse_pos):
         """현재 좌표에 존재하는 터렛 반환, 없으면 None"""
         for turret in self.turrets:

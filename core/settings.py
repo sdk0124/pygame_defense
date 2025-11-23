@@ -21,4 +21,7 @@ UI_PATH_HP = "ui/ui_layouts/hp_ui_layout.json"
 UI_PATH_MONEY = "ui/ui_layouts/money_ui_layout.json"
 UI_PATH_ROUND = "ui/ui_layouts/round_ui_layout.json"
 
+UI_PATH_SELECTED_CANNON = "ui/ui_layouts/cannon_selected_ui_layout.json"
+UI_PATH_SELECTED_CORE_DEBUGGER = "ui/ui_layouts/core_debugger_selected_ui_layout.json"
+
 UI_PATH_SCORE = "ui/ui_layouts/score_ui_layout.json"

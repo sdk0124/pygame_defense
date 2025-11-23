@@ -14,39 +14,39 @@
             "type": "label",
             "x": 1169,
             "y": 548,
-            "text": "10",
+            "text": "25",
             "color": [
                 0,
                 0,
                 0
             ],
-            "font_size": 40
+            "font_size": 30
         },
         {
             "layer": 4,
             "type": "label",
             "x": 1196,
             "y": 600,
-            "text": "1",
+            "text": "0.5",
             "color": [
                 0,
                 0,
                 0
             ],
-            "font_size": 40
+            "font_size": 30
         },
         {
             "layer": 4,
             "type": "label",
             "x": 1155,
             "y": 647,
-            "text": "1",
+            "text": "145",
             "color": [
                 0,
                 0,
                 0
             ],
-            "font_size": 43
+            "font_size": 30
         }
     ]
 }

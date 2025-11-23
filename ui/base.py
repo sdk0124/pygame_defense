@@ -8,6 +8,9 @@ class UIObject:
         self.alpha = 255
         self.layer = layer
 
+    def move(self, to_x, to_y):
+        self.rect.center = (to_x, to_y)
+
     def set_visible(self, flag: bool):
         self.visible = flag
 
