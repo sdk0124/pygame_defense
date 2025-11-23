@@ -17,7 +17,7 @@ ENEMY_DATA = {
     },
     "boss" : {
         "max_hp" : 5000,
-        "speed" : 100,
+        "speed" : 60,
         "money" : 2000,
         "score" : 2000,
         "image" : "enemy_boss.png"
