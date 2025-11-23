@@ -99,6 +99,12 @@ class Turret(pygame.sprite.Sprite):
 
         attack_interval = 1.0 / self.fire_rate
 
+        # 타겟이 없으면 장전 상태로 대기
+        if self.target is None:
+            if self.time_since_last_shot > attack_interval:
+                self.time_since_last_shot = attack_interval
+            return
+
         if self.time_since_last_shot >= attack_interval:
             self.time_since_last_shot -= attack_interval
             self.attack()
