@@ -6,7 +6,7 @@ from entities.world import World
 from entities.enemyManager import EnemyManager
 from entities.turretManager import TurretManager
 from entities.final_base import FinalBase
-from core.settings import FINAL_BASE_POS, ROWS, COLS, CELL_SIZE
+from core.settings import FINAL_BASE_POS, ROWS, COLS, CELL_SIZE, START_MONEY
 
 from data.turret_data import TURRET_DATA
 from data.enemy_data import ENEMY_DATA
@@ -36,7 +36,7 @@ class GameScene(Scene):
         self.final_base = self.create_final_base(FINAL_BASE_POS, FINAL_BASE_DATA["max_hp"])
 
         self.info = {
-            "money": 1000,
+            "money": START_MONEY,
             "hp": self.final_base.get_FinalBase_curHp(),
             "score": 0,
             "current_round": 1
