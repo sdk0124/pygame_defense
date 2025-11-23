@@ -101,11 +101,14 @@ class GameScene(Scene):
         if self.selected_turret_uis != self.selected_turret_uis_cannon:
             self.selected_turret_uis = None
             self.selected_turret_type = None
+
         if self.turret_manager.get_isTurret_purchasable("cannon", self.info["money"]):
             print("c")
             self.selected_turret_uis = self.selected_turret_uis_cannon
             self.selected_turret_type = "cannon"
             self.is_turretPurchaseMode = True
+        else:
+            self.is_turretPurchaseMode = False
 
     # 터렛 선택 (디버거 터렛 구매 모드)
     def select_turret_core_debugger(self):
@@ -113,11 +116,14 @@ class GameScene(Scene):
         if self.selected_turret_uis != self.selected_turret_uis_debugger:
             self.selected_turret_uis = None
             self.selected_turret_type = None
+
         if self.turret_manager.get_isTurret_purchasable("debugger", self.info["money"]):
             print("d")
             self.selected_turret_uis = self.selected_turret_uis_debugger
             self.selected_turret_type = "debugger"
             self.is_turretPurchaseMode = True
+        else:
+            self.is_turretPurchaseMode = False
 
     # ui manager 생성
     def prepare_uis(self) -> UIManager:
