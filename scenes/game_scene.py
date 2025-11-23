@@ -174,6 +174,7 @@ class GameScene(Scene):
                     if not self.turret_manager.get_isTurret_purchasable(self.selected_turret_type, self.info["money"]):
                         self.selected_turret_uis = None
                         self.selected_turret_type = None
+                        self.is_turretPurchaseMode = False
                 
                 # 터렛 구매 모드가 아닐 경우
                 else:
