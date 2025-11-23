@@ -163,9 +163,9 @@
             "y": 19,
             "text": "\uace8\ub4dc:",
             "color": [
-                255,
-                255,
-                255
+                0,
+                0,
+                0
             ],
             "font_size": 21
         },
@@ -176,9 +176,9 @@
             "y": 65,
             "text": "\ub0a8\uc740 \uccb4\ub825:",
             "color": [
-                255,
-                255,
-                255
+                0,
+                0,
+                0
             ],
             "font_size": 21
         },
@@ -189,9 +189,9 @@
             "y": 18,
             "text": "\ud604\uc7ac \ub77c\uc6b4\ub4dc:",
             "color": [
-                255,
-                255,
-                255
+                0,
+                0,
+                0
             ],
             "font_size": 20
         },
@@ -200,11 +200,11 @@
             "type": "label",
             "x": 1146,
             "y": 355,
-            "text": "15",
+            "text": "400",
             "color": [
-                255,
-                255,
-                255
+                0,
+                0,
+                0
             ],
             "font_size": 27
         },
@@ -213,31 +213,13 @@
             "type": "label",
             "x": 1025,
             "y": 354,
-            "text": "5",
-            "color": [
-                255,
-                255,
-                255
-            ],
-            "font_size": 30
-        },
-        {
-            "layer": 1,
-            "type": "button",
-            "x": 1007,
-            "y": 835,
-            "width": 200,
-            "height": 80,
-            "text": "Game Over",
+            "text": "100",
             "color": [
                 0,
-                120,
-                255
+                0,
+                0
             ],
-            "font_size": 32,
-            "image_path": "",
-            "action": "go_to_game_end",
-            "sound": null
+            "font_size": 30
         }
     ]
 }
