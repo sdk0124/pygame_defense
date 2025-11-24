@@ -1,5 +1,6 @@
 # ui/image.py
 import pygame, os, json
+from core.paths import ensure_resource_path
 from ui.base import UIObject
 
 class UIImage(UIObject):
@@ -10,8 +11,10 @@ class UIImage(UIObject):
         
 
     def load_image(self):
-        if self.image_path != "" and os.path.exists(self.image_path):
-            img = pygame.image.load(self.image_path).convert_alpha()
+        resolved_path = ensure_resource_path(self.image_path)
+
+        if resolved_path and os.path.exists(resolved_path):
+            img = pygame.image.load(resolved_path).convert_alpha()
             self.image = pygame.transform.scale(img, (self.rect.width, self.rect.height))
         else:
             self.image = pygame.Surface((self.rect.width, self.rect.height))
@@ -28,5 +31,5 @@ class UIImage(UIObject):
         super().load_ui(obj)
 
         if "image_path" in obj:
-            self.image_path = obj["image_path"]
+            self.image_path = ensure_resource_path(obj["image_path"])
             self.load_image()
