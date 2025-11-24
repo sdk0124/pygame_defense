@@ -60,8 +60,7 @@ UI 관련 JSON 파일 및 UI 시스템을 담당하는 클래스들이 위치.
 2. 실행 파일 빌드
 
    ```bash
-   pyinstaller --noconfirm --onefile --windowed --name CPUDefense \
-     --add-data "assets;assets" --add-data "data;data" --add-data "ui;ui" main.py
+   python -m PyInstaller CPUDefense.spec
    ```
 
 3. `dist/CPUDefense.exe`에서 게임을 실행합니다.
