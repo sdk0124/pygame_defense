@@ -42,8 +42,26 @@
 * assets/ : 
 이미지·사운드·폰트 등 리소스 파일 저장.
 
-* data/ : 
+* data/ :
 맵, 웨이브 정보 등 데이터 기반 파일 관리.
 
-* ui/ : 
+* ui/ :
 UI 관련 JSON 파일 및 UI 시스템을 담당하는 클래스들이 위치.
+
+## 실행 파일 (.exe) 빌드하기
+아래 명령은 PyInstaller를 사용해 `dist/CPUDefense.exe`를 생성합니다. Windows 터미널에서 프로젝트 루트 기준으로 실행하세요.
+
+1. 의존성 설치
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. 실행 파일 빌드
+
+   ```bash
+   pyinstaller --noconfirm --onefile --windowed --name CPUDefense \
+     --add-data "assets;assets" --add-data "data;data" --add-data "ui;ui" main.py
+   ```
+
+3. `dist/CPUDefense.exe`에서 게임을 실행합니다.
