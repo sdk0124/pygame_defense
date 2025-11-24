@@ -2,6 +2,7 @@
 import pygame, os, json
 from ui.base import UIObject
 from core.settings import FONT_PATH
+from core.paths import ensure_resource_path
 
 class ImageButton(UIObject):
     def __init__(self, x, y, width, height, image_path="", text="", font_size=32,
@@ -25,8 +26,10 @@ class ImageButton(UIObject):
         self.image = None
 
     def load_image(self):
-        if self.image_path != "" and os.path.exists(self.image_path):
-            img = pygame.image.load(self.image_path)
+        resolved_path = ensure_resource_path(self.image_path)
+
+        if resolved_path and os.path.exists(resolved_path):
+            img = pygame.image.load(resolved_path)
             self.image = pygame.transform.scale(img, (self.rect.width, self.rect.height))
         else:
             self.image = pygame.Surface((self.rect.width, self.rect.height))
@@ -34,9 +37,11 @@ class ImageButton(UIObject):
 
     def load_sound(self):
         """사운드 파일 로드 (없으면 무시)"""
-        if self.sound_path and os.path.exists(self.sound_path):
+        resolved_path = ensure_resource_path(self.sound_path)
+
+        if resolved_path and os.path.exists(resolved_path):
             try:
-                self.sound = pygame.mixer.Sound(self.sound_path)
+                self.sound = pygame.mixer.Sound(resolved_path)
             except pygame.error as e:
                 print(f"⚠️ 사운드 로드 실패: {self.sound_path} ({e})")
                 self.sound = None
@@ -119,11 +124,12 @@ class ImageButton(UIObject):
 
         # 버튼 이미지
         if "image_path" in obj:
-            self.image_path = obj["image_path"]
+            self.image_path = ensure_resource_path(obj["image_path"])
             self.load_image()
 
         if "sound_path" in obj:
             if obj["sound_path"]:
+                self.sound_path = ensure_resource_path(obj["sound_path"])
                 self.load_sound()
 
         # action (Scene에서 넘겨줄 bind_action dict 필요)
