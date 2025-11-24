@@ -26,6 +26,7 @@ class GameScene(Scene):
         super().__init__(game)
         self.wave_active = False
         self.wave_data = WAVE_DATA
+        self.max_wave_round = len(WAVE_DATA)
 
         self.world = World(load_map_data(), load_map_image())
         self.world.process_data()
@@ -86,6 +87,8 @@ class GameScene(Scene):
         그 때 유저가 '웨이브 시작' 버튼을 누르면 웨이브 생성
         """
         if not self.wave_active:
+            if self.info["current_round"] > self.max_wave_round:
+                return
             self.enemy_manager.set_wave(self.info["current_round"] - 1, self.wave_data)
             self.wave_active = True
 
@@ -209,8 +212,11 @@ class GameScene(Scene):
             self.info["hp"] = self.final_base.get_FinalBase_curHp()
 
             if self.enemy_manager.is_wave_done():
-                if self.info["current_round"] == 10:
+                if self.info["current_round"] >= self.max_wave_round:
+                    self.wave_active = False
                     self.go_to_game_end()
+                    return
+
                 self.info["current_round"] += 1
                 self.wave_active = False
                 print("웨이브 종료") # 확인용
