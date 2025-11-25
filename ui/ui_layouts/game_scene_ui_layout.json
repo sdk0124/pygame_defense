@@ -1,0 +1,273 @@
+{
+    "objects": [
+        {
+            "layer": 0,
+            "type": "image",
+            "x": 960,
+            "y": 0,
+            "width": 300,
+            "height": 960,
+            "image_path": "assets/images/ui/ui_background.png"
+        },
+        {
+            "layer": 1,
+            "type": "button",
+            "x": 972,
+            "y": 11,
+            "width": 280,
+            "height": 130,
+            "text": "",
+            "color": [
+                0,
+                120,
+                255
+            ],
+            "font_size": 32,
+            "image_path": "assets/images/ui/game_scene_start_button.png",
+            "action": "start_wave",
+            "sound": null
+        },
+        {
+            "layer": 1,
+            "type": "label",
+            "x": 980,
+            "y": 175,
+            "text": "\ud130\ub81b",
+            "color": [
+                0,
+                0,
+                0
+            ],
+            "font_size": 40
+        },
+        {
+            "layer": 1,
+            "type": "button",
+            "x": 980,
+            "y": 230,
+            "width": 100,
+            "height": 100,
+            "text": "",
+            "color": [
+                0,
+                120,
+                255
+            ],
+            "font_size": 32,
+            "image_path": "assets/images/ui/cannon_image.png",
+            "action": "select_turret_cannon",
+            "sound": null
+        },
+        {
+            "layer": 1,
+            "type": "button",
+            "x": 1100,
+            "y": 230,
+            "width": 150,
+            "height": 100,
+            "text": "",
+            "color": [
+                0,
+                120,
+                255
+            ],
+            "font_size": 32,
+            "image_path": "assets/images/ui/core_debugger_image.png",
+            "action": "select_turret_core_debugger",
+            "sound": null
+        },
+        {
+            "layer": 1,
+            "type": "image",
+            "x": 980,
+            "y": 350,
+            "width": 35,
+            "height": 35,
+            "image_path": "assets/images/ui/coin_icon.png"
+        },
+        {
+            "layer": 1,
+            "type": "image",
+            "x": 1100,
+            "y": 350,
+            "width": 35,
+            "height": 35,
+            "image_path": "assets/images/ui/coin_icon.png"
+        },
+        {
+            "layer": 2,
+            "type": "label",
+            "x": 1014,
+            "y": 639,
+            "text": "\uc120\ud0dd\ub41c \ud130\ub81b\uc774 \uc5c6\uc2b5\ub2c8\ub2e4.",
+            "color": [
+                0,
+                0,
+                0
+            ],
+            "font_size": 20
+        },
+        {
+            "layer": 2,
+            "type": "label",
+            "x": 980,
+            "y": 440,
+            "text": "\ud130\ub81b \uc815\ubcf4",
+            "color": [
+                0,
+                0,
+                0
+            ],
+            "font_size": 40
+        },
+        {
+            "layer": 1,
+            "type": "image",
+            "x": 960,
+            "y": 495,
+            "width": 300,
+            "height": 300,
+            "image_path": "assets/images/ui/info_background.png"
+        },
+        {
+            "layer": 0,
+            "type": "image",
+            "x": 20,
+            "y": 10,
+            "width": 35,
+            "height": 35,
+            "image_path": "assets/images/ui/coin_icon.png"
+        },
+        {
+            "layer": 0,
+            "type": "image",
+            "x": 20,
+            "y": 60,
+            "width": 35,
+            "height": 35,
+            "image_path": "assets/images/ui/health_icon.png"
+        },
+        {
+            "layer": 0,
+            "type": "image",
+            "x": 730,
+            "y": 10,
+            "width": 35,
+            "height": 35,
+            "image_path": "assets/images/ui/round_icon.png"
+        },
+        {
+            "layer": 0,
+            "type": "label",
+            "x": 63,
+            "y": 19,
+            "text": "\uace8\ub4dc:",
+            "color": [
+                0,
+                0,
+                0
+            ],
+            "font_size": 21
+        },
+        {
+            "layer": 0,
+            "type": "label",
+            "x": 65,
+            "y": 65,
+            "text": "\ub0a8\uc740 \uccb4\ub825:",
+            "color": [
+                0,
+                0,
+                0
+            ],
+            "font_size": 21
+        },
+        {
+            "layer": 0,
+            "type": "label",
+            "x": 774,
+            "y": 18,
+            "text": "\ud604\uc7ac \ub77c\uc6b4\ub4dc:",
+            "color": [
+                0,
+                0,
+                0
+            ],
+            "font_size": 20
+        },
+        {
+            "layer": 1,
+            "type": "label",
+            "x": 1146,
+            "y": 355,
+            "text": "400",
+            "color": [
+                0,
+                0,
+                0
+            ],
+            "font_size": 27
+        },
+        {
+            "layer": 1,
+            "type": "label",
+            "x": 1025,
+            "y": 354,
+            "text": "100",
+            "color": [
+                0,
+                0,
+                0
+            ],
+            "font_size": 30
+        },
+        {
+            "layer": 2,
+            "type": "image",
+            "x": 972,
+            "y": 809,
+            "width": 137,
+            "height": 133,
+            "image_path": "assets/images/ui/RevolutionKNU_qrcode 1.png"
+        },
+        {
+            "layer": 2,
+            "type": "label",
+            "x": 1118,
+            "y": 814,
+            "text": "\ub808\ubcfc\ub8e8\uc158",
+            "color": [
+                0,
+                0,
+                0
+            ],
+            "font_size": 34
+        },
+        {
+            "layer": 2,
+            "type": "label",
+            "x": 1134,
+            "y": 902,
+            "text": "\ud314\ub85c\uc6b0",
+            "color": [
+                0,
+                0,
+                0
+            ],
+            "font_size": 34
+        },
+        {
+            "layer": 2,
+            "type": "label",
+            "x": 1132,
+            "y": 858,
+            "text": "\uc778\uc2a4\ud0c0",
+            "color": [
+                0,
+                0,
+                0
+            ],
+            "font_size": 34
+        }
+    ]
+}

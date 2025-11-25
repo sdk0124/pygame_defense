@@ -1,0 +1,31 @@
+{
+    "objects": [
+        {
+            "layer": 0,
+            "type": "image",
+            "x": 0,
+            "y": 0,
+            "width": 1260,
+            "height": 960,
+            "image_path": "assets/images/ui/start_scene_background.png"
+        },
+        {
+            "layer": 1,
+            "type": "button",
+            "x": 389,
+            "y": 782,
+            "width": 488,
+            "height": 170,
+            "text": "",
+            "color": [
+                0,
+                120,
+                255
+            ],
+            "font_size": 32,
+            "action": "game_start",
+            "image_path": "assets/images/ui/start_scene_start_button.png",
+            "sound": null
+        }
+    ]
+}

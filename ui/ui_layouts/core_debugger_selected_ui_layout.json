@@ -1,0 +1,13 @@
+{
+    "objects": [
+        {
+            "layer": 3,
+            "type": "image",
+            "x": 980,
+            "y": 230,
+            "width": 64,
+            "height": 64,
+            "image_path": "assets/images/turrets/core_debugger.png"
+        }
+    ]
+}

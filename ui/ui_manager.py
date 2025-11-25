@@ -6,11 +6,15 @@ from ui.image import UIImage
 from ui.image_button import ImageButton
 
 class UIManager:
-    def __init__(self):
+    def __init__(self, is_following_mouse=False):
         self.ui_list = []
+        self.is_following_mouse = is_following_mouse
 
     def add(self, ui_obj):
         self.ui_list.append(ui_obj)
+
+    def set_following_mouse(self, val):
+        self.is_following_mouse = val
 
     def handle_events(self, event):
         # 클릭 이벤트는 보통 위에 있는 UI부터 처리해야 하므로 layer 역순
@@ -25,6 +29,9 @@ class UIManager:
         for ui in self.ui_list:
             if ui.visible:
                 ui.update(dt)
+            if self.is_following_mouse: # 드래그 기능
+                mouse_pos = pygame.mouse.get_pos()
+                ui.move(mouse_pos[0], mouse_pos[1])
 
     def draw(self, surface):
         # 레이어 낮은 것부터 높게 순서대로 draw → 위에 있을수록 늦게 그려진다
@@ -73,7 +80,6 @@ class UIManager:
                     obj.get("font_size", 24),
                     tuple(obj.get("text_color", (255,255,255))),
                     tuple(obj.get("color_idle", (60,60,60))),
-                    tuple(obj.get("color_hover", (90,90,90))),
                     None,  # action은 나중에 연결
                     obj.get("layer", 0)
                 )

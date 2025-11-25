@@ -3,12 +3,14 @@ from scenes.scene import Scene
 from ui.ui_manager import UIManager
 from ui.image_button import ImageButton
 from ui.label import Label
-from core.settings import UI_PATH_END_SCENE
+from core.settings import UI_PATH_END_SCENE, UI_PATH_SCORE
 
 class GameOverScene(Scene):
     def __init__(self, game, final_score: int = 0):
         super().__init__(game)
-        self.final_score = final_score
+        self.info = {
+            "final_score": final_score
+        }
 
         self.uis = self.prepare_uis()
 
@@ -23,13 +25,14 @@ class GameOverScene(Scene):
         self.switch_to(StartScene(self.game))
 
     def prepare_uis(self):
-        # text = Label(220, 200, 0, "GAME OVER", 80, (255, 80, 80))
-        # score_surf = Label(320, 300, 0, f"SCORE: {self.final_score}", 36)
-        # retry_button = ImageButton(300, 400, 200, 60, None, "RETRY", action=self.game_start)
-        # exit_button = ImageButton(300, 480, 200, 60, None, "EXIT", action=self.go_to_start_scene)
-
         uis = UIManager()
         uis.load_uis(UI_PATH_END_SCENE, {"game_start": self.game_start, "go_to_start_scene": self.go_to_start_scene})
+
+        # game logic에 영향을 받아서, 따로 들고 있어야 하는 ui들
+        self.variable_uis = {
+            "final_score": Label()
+        }
+        self.variable_uis["final_score"].load_ui(path=UI_PATH_SCORE)
 
         return uis
 
@@ -41,8 +44,14 @@ class GameOverScene(Scene):
             self.uis.handle_events(event)
 
     def update(self, dt: float) -> None:
-        pass
+        # 텍스트 ui 업데이트
+        for key in self.variable_uis.keys():
+            self.variable_uis[key].set_text(str(self.info[key]))
 
     def draw(self, screen: pygame.Surface) -> None:
         screen.fill((0, 0, 0))
         self.uis.draw(screen)
+
+        # 점수 등
+        for ui in self.variable_uis.values():
+            ui.draw(screen)

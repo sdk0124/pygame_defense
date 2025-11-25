@@ -1,0 +1,49 @@
+{
+    "objects": [
+        {
+            "layer": 1,
+            "type": "button",
+            "x": 208,
+            "y": 666,
+            "width": 351,
+            "height": 158,
+            "text": " ",
+            "color": [
+                0,
+                120,
+                255
+            ],
+            "font_size": 32,
+            "image_path": "assets/images/ui/end_scene_restart_button.png",
+            "action": "game_start",
+            "sound": null
+        },
+        {
+            "layer": 1,
+            "type": "button",
+            "x": 661,
+            "y": 667,
+            "width": 351,
+            "height": 158,
+            "text": " ",
+            "color": [
+                0,
+                120,
+                255
+            ],
+            "font_size": 32,
+            "image_path": "assets/images/ui/end_scene_exit_button.png",
+            "action": "go_to_start_scene",
+            "sound": null
+        },
+        {
+            "layer": 0,
+            "type": "image",
+            "x": 0,
+            "y": 0,
+            "width": 1260,
+            "height": 960,
+            "image_path": "assets/images/ui/end_scene_background.png"
+        }
+    ]
+}

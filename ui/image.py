@@ -1,17 +1,20 @@
 # ui/image.py
 import pygame, os, json
+from core.paths import ensure_resource_path
 from ui.base import UIObject
 
 class UIImage(UIObject):
-    def __init__(self, x=0, y=0, w=128, h=128, image_path="assets/default_button.png", layer=0):
-        super().__init__(x, y, w, h, layer)
+    def __init__(self, x=0, y=0, width=128, height=128, image_path="", layer=0):
+        super().__init__(x, y, width, height, layer)
         self.image_path = image_path
         self.image = None
-        self.load_image()
+        
 
     def load_image(self):
-        if os.path.exists(self.image_path):
-            img = pygame.image.load(self.image_path).convert_alpha()
+        resolved_path = ensure_resource_path(self.image_path)
+
+        if resolved_path and os.path.exists(resolved_path):
+            img = pygame.image.load(resolved_path).convert_alpha()
             self.image = pygame.transform.scale(img, (self.rect.width, self.rect.height))
         else:
             self.image = pygame.Surface((self.rect.width, self.rect.height))
@@ -27,9 +30,6 @@ class UIImage(UIObject):
                 obj = json.load(f)["objects"][0]
         super().load_ui(obj)
 
-        if "image" in obj:
-            self.image_path = obj["image"]
-            self.image = pygame.image.load(obj["image"]).convert_alpha()
-            # rect 크기 업데이트
-            self.rect.width = self.image.get_width()
-            self.rect.height = self.image.get_height()
+        if "image_path" in obj:
+            self.image_path = ensure_resource_path(obj["image_path"])
+            self.load_image()

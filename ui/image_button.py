@@ -2,37 +2,69 @@
 import pygame, os, json
 from ui.base import UIObject
 from core.settings import FONT_PATH
+from core.paths import ensure_resource_path
 
 class ImageButton(UIObject):
-    def __init__(self, x, y, w, h, image_path, text, font_size=32,
+    def __init__(self, x, y, width, height, image_path="", text="", font_size=32,
                  text_color=(255,255,255),
                  color_idle=(60,60,60),
-                 color_hover=(90,90,90),
                  action=None,
+                 sound_path=None,
                  layer=0):
         
-        super().__init__(x, y, w, h, layer)
+        super().__init__(x, y, width, height, layer)
         self.text = text
         self.font = pygame.font.Font(FONT_PATH, font_size)
         self.font_size = font_size
         self.text_color = text_color
         self.color_idle = color_idle
-        self.color_hover = color_hover
         self.hovered = False
         self.action = action
+        self.sound_path = sound_path
+        self.sound = None
         self.image_path = image_path if image_path else ""
         self.image = None
-        self.load_image()
 
     def load_image(self):
-        if os.path.exists(self.image_path):
-            img = pygame.image.load(self.image_path)
+        resolved_path = ensure_resource_path(self.image_path)
+
+        if resolved_path and os.path.exists(resolved_path):
+            img = pygame.image.load(resolved_path)
             self.image = pygame.transform.scale(img, (self.rect.width, self.rect.height))
         else:
             self.image = pygame.Surface((self.rect.width, self.rect.height))
             self.image.fill((120, 120, 120))
 
+    def load_sound(self):
+        """사운드 파일 로드 (없으면 무시)"""
+        resolved_path = ensure_resource_path(self.sound_path)
+
+        if resolved_path and os.path.exists(resolved_path):
+            try:
+                self.sound = pygame.mixer.Sound(resolved_path)
+            except pygame.error as e:
+                print(f"⚠️ 사운드 로드 실패: {self.sound_path} ({e})")
+                self.sound = None
+        else:
+            self.sound = None
+
+    def click(self):
+        """버튼 클릭 시 사운드 & 액션"""
+        if self.sound:
+            self.sound.play()
+        print(f"🔘 버튼 클릭됨: {self.text} | action={self.action}")
+
+    def apply_hover_brightness(self, image, amount=40):
+        img = image.copy()
+        overlay = pygame.Surface(img.get_size()).convert()
+        overlay.fill((amount, amount, amount))
+        img.blit(overlay, (0, 0), special_flags=pygame.BLEND_RGB_ADD)
+        return img
+
     def handle_event(self, event) -> bool:
+        if not self.visible:
+            return False
+        
         if event.type == pygame.MOUSEMOTION:
             self.hovered = self.rect.collidepoint(event.pos)
 
@@ -47,19 +79,26 @@ class ImageButton(UIObject):
         if not self.visible:
             return
 
-        # 배경
-        color = self.color_hover if self.hovered else self.color_idle
-        pygame.draw.rect(surface, color, self.rect, border_radius=8)
-
-        # 이미지 중앙배치
         if self.image is not None:
-            img_rect = self.image.get_rect(center=self.rect.center)
-            surface.blit(self.image, img_rect)
+            # hover 효과
+            if self.rect.collidepoint(pygame.mouse.get_pos()):
+                img_to_draw = self.apply_hover_brightness(self.image)
+            else:
+                img_to_draw = self.image
+
+            # 이미지 중앙배치
+            img_rect = img_to_draw.get_rect(center=self.rect.center)
+            surface.blit(img_to_draw, img_rect)
 
         # 텍스트
-        text_surf = self.font.render(self.text, True, self.text_color)
-        text_rect = text_surf.get_rect(center=self.rect.center)
-        surface.blit(text_surf, text_rect)
+        lines = self.text.split("\n")
+        y_offset = 0
+        for line in lines:
+            surf = self.font.render(line, True, self.text_color)
+            text_rect = surf.get_rect(center=self.rect.center)
+            surface.blit(surf, (text_rect.x, text_rect.y + y_offset))
+            y_offset += surf.get_height()
+        
 
     def load_ui(self, obj=None, path=None):
         if path:
@@ -83,12 +122,15 @@ class ImageButton(UIObject):
         if "color_idle" in obj:
             self.color_idle = tuple(obj["color_idle"])
 
-        if "color_hover" in obj:
-            self.color_hover = tuple(obj["color_hover"])
-
         # 버튼 이미지
-        if "image" in obj:
-            self.image = pygame.image.load(obj["image"]).convert_alpha()
+        if "image_path" in obj:
+            self.image_path = ensure_resource_path(obj["image_path"])
+            self.load_image()
+
+        if "sound_path" in obj:
+            if obj["sound_path"]:
+                self.sound_path = ensure_resource_path(obj["sound_path"])
+                self.load_sound()
 
         # action (Scene에서 넘겨줄 bind_action dict 필요)
         if "action" in obj:
