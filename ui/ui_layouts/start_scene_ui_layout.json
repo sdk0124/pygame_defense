@@ -16,7 +16,7 @@
             "y": 782,
             "width": 488,
             "height": 143,
-            "text": "Start",
+            "text": "",
             "color": [
                 0,
                 120,
@@ -24,7 +24,7 @@
             ],
             "font_size": 32,
             "action": "game_start",
-            "image_path": "",
+            "image_path": "assets/images/ui/start_scene_start_button.png",
             "sound": null
         }
     ]

@@ -1,68 +1,49 @@
 {
     "objects": [
         {
-            "type": "label",
-            "x": 420,
-            "y": 135,
-            "text": "\uac8c\uc784 \uc624\ubc84",
-            "color": [
-                255,
-                255,
-                255
-            ],
-            "font_size": 90,
-            "layer": 0
-        },
-        {
-            "type": "label",
-            "x": 362,
-            "y": 266,
-            "text": "Score:",
-            "color": [
-                255,
-                255,
-                255
-            ],
-            "font_size": 63,
-            "layer": 0
-        },
-        {
+            "layer": 1,
             "type": "button",
-            "x": 466,
-            "y": 373,
-            "width": 283,
-            "height": 120,
-            "text": "RETRY",
-            "image_path": "",
+            "x": 208,
+            "y": 666,
+            "width": 351,
+            "height": 158,
+            "text": " ",
             "color": [
                 0,
                 120,
                 255
             ],
             "font_size": 32,
-            "corner_radius": 15,
+            "image_path": "assets/images/ui/end_scene_restart_button.png",
             "action": "game_start",
-            "sound": null,
-            "layer": 0
+            "sound": null
         },
         {
+            "layer": 1,
             "type": "button",
-            "x": 466,
-            "y": 507,
-            "width": 285,
-            "height": 130,
-            "text": "EXIT",
-            "image_path": "",
+            "x": 661,
+            "y": 667,
+            "width": 351,
+            "height": 158,
+            "text": " ",
             "color": [
                 0,
                 120,
                 255
             ],
             "font_size": 32,
-            "corner_radius": 15,
+            "image_path": "assets/images/ui/end_scene_exit_button.png",
             "action": "go_to_start_scene",
-            "sound": null,
-            "layer": 0
+            "sound": null
+        },
+        {
+            "layer": 0,
+            "type": "image",
+            "x": 0,
+            "y": 0,
+            "width": 1260,
+            "height": 960,
+            "image_path": "assets/images/ui/end_scene_background.png"
         }
     ]
 }
