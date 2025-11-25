@@ -31,6 +31,7 @@ class Enemy(pygame.sprite.Sprite):
             print("collide with CPU!")
             final_base.take_damage()
             self.kill()
+            return
 
         dist = self.movement.length()
         move_amount = self.speed * (dt / 1000)
