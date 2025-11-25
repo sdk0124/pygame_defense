@@ -23,7 +23,7 @@
                 255
             ],
             "font_size": 32,
-            "image_path": "assets/images/ui/start_button.png",
+            "image_path": "assets/images/ui/game_scene_start_button.png",
             "action": "start_wave",
             "sound": null
         },
@@ -83,7 +83,7 @@
             "y": 350,
             "width": 35,
             "height": 35,
-            "image_path": "assets/images/ui/coin.png"
+            "image_path": "assets/images/ui/coin_icon.png"
         },
         {
             "layer": 1,
@@ -92,7 +92,7 @@
             "y": 350,
             "width": 35,
             "height": 35,
-            "image_path": "assets/images/ui/coin.png"
+            "image_path": "assets/images/ui/coin_icon.png"
         },
         {
             "layer": 2,
@@ -136,7 +136,7 @@
             "y": 10,
             "width": 35,
             "height": 35,
-            "image_path": "assets/images/ui/coin.png"
+            "image_path": "assets/images/ui/coin_icon.png"
         },
         {
             "layer": 0,
@@ -145,7 +145,7 @@
             "y": 60,
             "width": 35,
             "height": 35,
-            "image_path": "assets/images/ui/health.png"
+            "image_path": "assets/images/ui/health_icon.png"
         },
         {
             "layer": 0,
@@ -154,7 +154,7 @@
             "y": 10,
             "width": 35,
             "height": 35,
-            "image_path": "assets/images/ui/round.png"
+            "image_path": "assets/images/ui/round_icon.png"
         },
         {
             "layer": 0,
@@ -220,6 +220,54 @@
                 0
             ],
             "font_size": 30
+        },
+        {
+            "layer": 2,
+            "type": "image",
+            "x": 972,
+            "y": 809,
+            "width": 137,
+            "height": 133,
+            "image_path": "assets/images/ui/RevolutionKNU_qrcode 1.png"
+        },
+        {
+            "layer": 2,
+            "type": "label",
+            "x": 1118,
+            "y": 814,
+            "text": "\ub808\ubcfc\ub8e8\uc158",
+            "color": [
+                0,
+                0,
+                0
+            ],
+            "font_size": 34
+        },
+        {
+            "layer": 2,
+            "type": "label",
+            "x": 1134,
+            "y": 902,
+            "text": "\ud314\ub85c\uc6b0",
+            "color": [
+                0,
+                0,
+                0
+            ],
+            "font_size": 34
+        },
+        {
+            "layer": 2,
+            "type": "label",
+            "x": 1132,
+            "y": 858,
+            "text": "\uc778\uc2a4\ud0c0",
+            "color": [
+                0,
+                0,
+                0
+            ],
+            "font_size": 34
         }
     ]
 }
